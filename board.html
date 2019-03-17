@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<title>Trello Clone</title>
+<style>
+
+nav
+{
+	background-color:#0067a3;
+}
+
+html,body
+{
+	height:100%;
+		background-color:#0079cf;
+}
+
+.whitetext
+{
+	color:white;
+}
+
+.white 
+{
+	background-color:white;
+	margin:5px;
+}
+
+.white:hover
+{
+	background-color:green;
+}
+
+ul {
+  list-style-type: none;
+  padding:0;
+  margin:0;
+}
+
+.divclass {
+  padding:10px;
+  width: 350px;
+
+  border: 1px solid #aaaaaa;
+  	display:inline-table	;
+	background-color:#eee;
+}
+
+.hiddentextarea {
+	display:none;
+}
+
+.block
+{
+	display:block;
+}
+
+#big
+{
+	display:inline-block;
+}
+</style>
+<body>
+<nav>
+Trello Clone
+</nav>
+<p class="whitetext">Welcome Board</p>
+<div id="board">
+	<div class="divclass" id="1d">
+	<strong>Stuff to try</strong>
+	<ul id="dv">
+		<li><div class="white">SHW</div></li>
+		<li><div class="white">SHW</div></li>
+		<li><div class="white">SHW</div></li>
+		<li><div class="white">SHW</div></li>
+	</ul>
+	<button id="button1" onclick="show()">Add another card</button>
+	<div id="div1" class="hiddentextarea">
+	<p>
+	<textarea id="textarea1"></textarea>
+	</p>
+	<p><button id="addbutton1" onclick="addcard()">Add card</button><button onclick="cancel()">X</button></p>
+	</div>
+	</div>
+	<div class="divclass" id="2v">
+	Try it (another list)
+	</div>
+	<div class="divclass"><a href="">Add another list</a></div>
+</div>
+</body>
+	<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+	<script src="board.js"></script>
+
+</html>
