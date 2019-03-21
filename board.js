@@ -147,16 +147,20 @@ var BoardComponent = function (_React$Component2) {
 
         _this2.state = {
             lists: [{
-                title: "Stuff to try (this is a list)"
+                title: "Stuff to try (this is a list)",
+                cards: [{ title: "Studff" }, { title: "Studff" }]
             }, {
-                title: "Stuff to try (this is a list)"
+                title: "Stuff to try (this is a list)",
+                cards: []
             }],
             input: "",
             show: false,
+            cardshows: [],
             displays: [],
             titleinput: "",
-            titleinputs: []
+            cardinput: ""
         };
+        _this2.cardList = _this2.cardList.bind(_this2);
         _this2.listOfList = _this2.listOfList.bind(_this2);
         _this2.addList = _this2.addList.bind(_this2);
         _this2.displayForm = _this2.displayForm.bind(_this2);
@@ -165,17 +169,133 @@ var BoardComponent = function (_React$Component2) {
         _this2.handleTitleChange = _this2.handleTitleChange.bind(_this2);
         _this2.edits = [];
         _this2.shows = [];
+        _this2.addcards = [];
+        _this2.cardshow = [];
+        _this2.handleCardChanges = [];
+        _this2.handleCardChange = _this2.handleCardChange.bind(_this2);
+        _this2.hideCardMenu = _this2.displayCardMenu.bind(_this2);
+        _this2.displayCardMenus = [];
+        _this2.ListCom = _this2.ListCom.bind(_this2);
         var listlength = _this2.state.lists.length;
         for (var i = 0; i < listlength; i++) {
             //I am trying to bind the index of lists to method
             //to make sure each changeListTitle and showTitleEditor method work for different lists
             _this2.edits.push(_this2.changeListTitle.bind(_this2, i));
             _this2.shows.push(_this2.showTitleEditor.bind(_this2, i));
+            _this2.displayCardMenus.push(_this2.displayCardMenu.bind(_this2, i));
+            _this2.addcards.push(_this2.addcard.bind(_this2, i));
         }
         return _this2;
     }
 
     _createClass(BoardComponent, [{
+        key: "falseCardShowsList",
+        value: function falseCardShowsList(length) {
+            var newcardshows = [];
+            for (var i = 0; i < length; i++) {
+                newcardshows[i] = false;
+            }
+            return newcardshows;
+        }
+    }, {
+        key: "hideCardMenu",
+        value: function hideCardMenu() {
+
+            this.setState({
+                cardshows: this.falseCardShowsList(this.state.cardshows.length),
+                cardinput: ""
+            });
+        }
+    }, {
+        key: "displayCardMenu",
+        value: function displayCardMenu(id) {
+            var newcardshows = this.falseCardShowsList(this.state.cardshows.length);
+
+            newcardshows[id] = true;
+
+            this.setState({
+                cardshows: newcardshows,
+                cardinput: ""
+            });
+        }
+    }, {
+        key: "ListCom",
+        value: function ListCom(cardlist, cardshow, addcard, cardinput, displayCardMenu) {
+            return React.createElement(
+                "div",
+                null,
+                cardlist,
+                React.createElement(
+                    "div",
+                    { className: cardshow ? "" : "hiddentextarea" },
+                    React.createElement(
+                        "form",
+                        { id: "usrform", onSubmit: addcard },
+                        React.createElement(
+                            "p",
+                            null,
+                            React.createElement("textarea", { className: "w-100", value: cardinput,
+                                onChange: this.handleCardChange,
+                                placeholder: "Enter a title for this card", required: true })
+                        ),
+                        React.createElement(
+                            "p",
+                            null,
+                            React.createElement(
+                                "button",
+                                { form: "", onClick: addcard },
+                                "Add card"
+                            ),
+                            React.createElement(
+                                "button",
+                                { form: "", onClick: this.hideCardMenu },
+                                "X"
+                            )
+                        )
+                    )
+                ),
+                React.createElement(
+                    "button",
+                    { onClick: displayCardMenu, className: cardshow ? "hiddentextarea" : "" },
+                    "Add another card"
+                )
+            );
+        }
+    }, {
+        key: "cardList",
+        value: function cardList(cards) {
+            //list the cards
+            var arr = cards.map(function (card, item) {
+                return React.createElement(
+                    "li",
+                    { key: item + card.title },
+                    React.createElement(
+                        "div",
+                        { className: "white" },
+                        card.title
+                    )
+                );
+            });
+            return React.createElement(
+                "ul",
+                { id: "dv" },
+                arr
+            );
+        }
+    }, {
+        key: "addcard",
+        value: function addcard(id) {
+            event.preventDefault();
+            if (this.state.cardinput.trim() !== "") {
+                var newlist = [].concat(_toConsumableArray(this.state.lists));
+                newlist[id].cards.push({ title: this.state.cardinput });
+                this.setState({
+                    cardinput: "",
+                    lists: newlist
+                });
+            }
+        }
+    }, {
         key: "showTitleEditor",
         value: function showTitleEditor(id) {
             //show the title editor when clicked and make sure other title editor is hidden
@@ -198,6 +318,13 @@ var BoardComponent = function (_React$Component2) {
             });
         }
     }, {
+        key: "handleCardChange",
+        value: function handleCardChange(event) {
+            this.setState({
+                cardinput: event.target.value
+            });
+        }
+    }, {
         key: "handleChange",
         value: function handleChange(event) {
             this.setState({
@@ -211,8 +338,10 @@ var BoardComponent = function (_React$Component2) {
             if (this.state.titleinput.trim() !== "") {
                 var newlist = [].concat(_toConsumableArray(this.state.lists));
                 var newdisplay = [].concat(_toConsumableArray(this.state.displays));
+                var newcards = [].concat(_toConsumableArray(newlist[id].cards));
                 newlist[id] = {
-                    title: this.state.titleinput
+                    title: this.state.titleinput,
+                    cards: newcards
                 };
                 newdisplay[id] = false;
                 this.setState({ lists: newlist, displays: newdisplay });
@@ -238,7 +367,7 @@ var BoardComponent = function (_React$Component2) {
             event.preventDefault();
             if (this.state.input.trim() !== "") {
                 var newlist = [].concat(_toConsumableArray(this.state.lists));
-                newlist.push({ title: this.state.input });
+                newlist.push({ title: this.state.input, cards: [] });
                 this.setState({
                     lists: newlist,
                     input: ""
@@ -246,6 +375,8 @@ var BoardComponent = function (_React$Component2) {
                 //Bind methods to new list again
                 this.edits.push(this.changeListTitle.bind(this, newlist.length - 1));
                 this.shows.push(this.showTitleEditor.bind(this, newlist.length - 1));
+                this.displayCardMenus.push(this.displayCardMenu.bind(this, newlist.length - 1));
+                this.addcards.push(this.addcard.bind(this, newlist.length - 1));
             }
         }
     }, {
@@ -266,11 +397,13 @@ var BoardComponent = function (_React$Component2) {
                     ),
                     React.createElement(
                         "form",
-                        { className: _this3.state.displays[index] ? "" : "hiddentextarea", onSubmit: _this3.edits[index] },
-                        React.createElement("input", { onChange: _this3.handleTitleChange, value: _this3.state.titleinput, type: "text", required: true }),
+                        { className: _this3.state.displays[index] ? "" : "hiddentextarea",
+                            onSubmit: _this3.edits[index] },
+                        React.createElement("input", { onChange: _this3.handleTitleChange, value: _this3.state.titleinput,
+                            type: "text", required: true }),
                         React.createElement("input", { type: "submit", value: "Change list title" })
                     ),
-                    React.createElement(ListComponent, { list: list })
+                    _this3.ListCom(_this3.cardList(list.cards), _this3.state.cardshows[index], _this3.addcards[index], _this3.state.cardinput, _this3.displayCardMenus[index])
                 );
             });
             return arr;
@@ -293,7 +426,8 @@ var BoardComponent = function (_React$Component2) {
                     ),
                     React.createElement(
                         "form",
-                        { id: "on0", className: "small " + (this.state.show ? "" : "hiddentextarea"), onSubmit: this.addList },
+                        { id: "on0", className: "small " + (this.state.show ? "" : "hiddentextarea"),
+                            onSubmit: this.addList },
                         React.createElement(
                             "p",
                             null,
