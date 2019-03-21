@@ -87,17 +87,21 @@ class BoardComponent extends React.Component {
         this.state =
             {
                 lists: [{
-                    title: "Stuff to try (this is a list)"
+                    title: "Stuff to try (this is a list)",
+                    cards: [{ title: "Studff" }, { title: "Studff" }]
                 },
                 {
-                    title: "Stuff to try (this is a list)"
+                    title: "Stuff to try (this is a list)",
+                    cards: []
                 }],
                 input: "",
                 show: false,
+                cardshows:[],
                 displays: [],
                 titleinput: "",
-                titleinputs:[]
+                cardinput:""
             }
+        this.cardList = this.cardList.bind(this);
         this.listOfList = this.listOfList.bind(this);
         this.addList = this.addList.bind(this);
         this.displayForm = this.displayForm.bind(this);
@@ -106,13 +110,98 @@ class BoardComponent extends React.Component {
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.edits = [];
         this.shows = [];
+        this.addcards = [];
+        this.cardshow = [];
+        this.handleCardChanges = [];
+        this.handleCardChange = this.handleCardChange.bind(this);
+        this.hideCardMenu = this.displayCardMenu.bind(this);
+        this.displayCardMenus = [];
+        this.ListCom = this.ListCom.bind(this);
         let listlength = this.state.lists.length;
         for (let i = 0; i < listlength; i++) {
             //I am trying to bind the index of lists to method
             //to make sure each changeListTitle and showTitleEditor method work for different lists
             this.edits.push(this.changeListTitle.bind(this, i));
             this.shows.push(this.showTitleEditor.bind(this, i));
+            this.displayCardMenus.push(this.displayCardMenu.bind(this,i));
+            this.addcards.push(this.addcard.bind(this,i));
         }
+    }
+
+    falseCardShowsList(length)
+    {
+        let newcardshows = [];
+        for (let i = 0; i < length;i++)
+        {
+            newcardshows[i] = false;
+        }
+        return newcardshows;
+    }
+
+    hideCardMenu()
+    {
+
+        this.setState({
+            cardshows: this.falseCardShowsList(this.state.cardshows.length),
+            cardinput: ""
+        });
+    }
+
+    displayCardMenu(id) {
+        let newcardshows = this.falseCardShowsList(this.state.cardshows.length);
+        
+        newcardshows[id] = true;
+
+        this.setState({
+            cardshows: newcardshows,
+            cardinput: ""
+        });
+    }
+
+    ListCom(cardlist, cardshow, addcard, cardinput, displayCardMenu) {
+        return <div>
+            {cardlist}
+            <div className={cardshow ? "" : "hiddentextarea"}>
+                <form id="usrform" onSubmit={addcard}>
+                    <p>
+                        <textarea className="w-100" value={cardinput}
+                            onChange={this.handleCardChange}
+                            placeholder="Enter a title for this card" required />
+                    </p>
+                    <p>
+                    <button form="" onClick={addcard}>Add card</button>
+                        <button form="" onClick={this.hideCardMenu}>X</button>
+                    </p>
+                </form>
+            </div>
+
+            <button onClick={displayCardMenu} className={cardshow ? "hiddentextarea" : ""}>
+                Add another card
+            </button>
+        </div>
+    }
+
+    cardList(cards) {
+        //list the cards
+        let arr = cards.map((card, item) => {
+            return <li key={item + card.title}>
+                <div className="white">{card.title}</div>
+            </li>;
+        });
+        return <ul id="dv">{arr}</ul>;
+    }
+
+    addcard(id) {
+        event.preventDefault();
+        if (this.state.cardinput.trim() !== "") {
+            let newlist = [...this.state.lists];
+            newlist[id].cards.push({ title: this.state.cardinput });
+            this.setState({
+                cardinput: "",
+                lists: newlist
+            });
+        }
+
     }
 
     showTitleEditor(id) {
@@ -120,18 +209,25 @@ class BoardComponent extends React.Component {
         let newdisplay = [...this.state.displays].map((item) => {
             return false;
         });
-        
+
         newdisplay[id] = true;
 
-        this.setState({ 
+        this.setState({
             displays: newdisplay,
-            titleinput:""
-         });
+            titleinput: ""
+        });
     }
 
     handleTitleChange(event) {
         this.setState({
             titleinput: event.target.value
+        });
+    }
+
+    handleCardChange(event)
+    {
+        this.setState({
+            cardinput:event.target.value
         });
     }
 
@@ -143,17 +239,18 @@ class BoardComponent extends React.Component {
 
     changeListTitle(id) {
         event.preventDefault();
-        if (this.state.titleinput.trim() !== "")
-        {
+        if (this.state.titleinput.trim() !== "") {
             let newlist = [...this.state.lists];
             let newdisplay = [...this.state.displays];
+            let newcards = [...newlist[id].cards];
             newlist[id] = {
-            title: this.state.titleinput
-        };
-        newdisplay[id] = false;
-        this.setState({ lists: newlist, displays: newdisplay });
+                title: this.state.titleinput,
+                cards:newcards
+            };
+            newdisplay[id] = false;
+            this.setState({ lists: newlist, displays: newdisplay });
         }
-        
+
     }
 
     hideForm() {
@@ -172,7 +269,7 @@ class BoardComponent extends React.Component {
         event.preventDefault();
         if (this.state.input.trim() !== "") {
             let newlist = [...this.state.lists];
-            newlist.push({ title: this.state.input });
+            newlist.push({ title: this.state.input ,cards:[]});
             this.setState({
                 lists: newlist,
                 input: ""
@@ -180,7 +277,8 @@ class BoardComponent extends React.Component {
             //Bind methods to new list again
             this.edits.push(this.changeListTitle.bind(this, newlist.length - 1));
             this.shows.push(this.showTitleEditor.bind(this, newlist.length - 1));
-
+            this.displayCardMenus.push(this.displayCardMenu.bind(this,newlist.length-1));
+            this.addcards.push(this.addcard.bind(this,newlist.length-1));
         }
 
     }
@@ -190,11 +288,15 @@ class BoardComponent extends React.Component {
             return <div className="divclass" id="1d"><strong
                 className={this.state.displays[index] ? "hiddentextarea" : ""}
                 onClick={this.shows[index]}>{list.title}</strong>
-                <form className={this.state.displays[index] ? "" : "hiddentextarea"} onSubmit={this.edits[index]}>
-                    <input onChange={this.handleTitleChange} value={this.state.titleinput} type="text" required />
+                <form className={this.state.displays[index] ? "" : "hiddentextarea"}
+                 onSubmit={this.edits[index]}>
+                    <input onChange={this.handleTitleChange} value={this.state.titleinput}
+                     type="text" required />
                     <input type="submit" value="Change list title" />
                 </form>
-                <ListComponent list={list} /></div>
+                {this.ListCom(this.cardList(list.cards),
+                this.state.cardshows[index],this.addcards[index],this.state.cardinput,
+                this.displayCardMenus[index])}</div>
         });
         return arr;
     }
@@ -203,7 +305,8 @@ class BoardComponent extends React.Component {
         return <div>{this.listOfList()}<div className="divclass">
             <button className={this.state.show ? "hiddentextarea" : ""}
                 onClick={this.displayForm}>Add another List</button>
-            <form id="on0" className={"small " + (this.state.show ? "" : "hiddentextarea")} onSubmit={this.addList}>
+            <form id="on0" className={"small " + (this.state.show ? "" : "hiddentextarea")}
+             onSubmit={this.addList}>
                 <p>
                     <input onChange={this.handleChange} value={this.state.input} type="text" required />
                 </p>
