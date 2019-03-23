@@ -7,7 +7,7 @@
 
 button
 {
-	font-size:16px;
+	font-size:14px;
 }
 
 nav
@@ -28,8 +28,11 @@ html,body
 
 .white 
 {
+	
+	border-bottom:5px solid #eee;
+	padding:5px;
 	background-color:white;
-	margin-bottom:5px;
+	font-size:15px;
 }
 
 .white:hover
@@ -48,14 +51,20 @@ ul {
 	white-space: nowrap;
 }
 
+.Container
+{
+	padding:8px;
+	min-height:200px;
+}
+
 .divclass {
+  
+  border-radius:2px;
   margin:5px;
-  width:350px;
+  width:300px;
   padding:10px;
-  overflow:auto;
-  border: 1px solid #aaaaaa;
-  	display:inline-table;
-	background-color:#eee;
+  display:inline-table;
+  background-color:#eee;
 	
 }
 
