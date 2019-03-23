@@ -1,3 +1,78 @@
+"use strict"; /*class ListComponent extends React.Component {
+              constructor(props) {
+              super(props);
+              this.state = {
+              show: false,
+              cards: [],
+              input: ""
+              }
+              this.cardList = this.cardList.bind(this);
+              this.addcard = this.addcard.bind(this);
+              this.displayMenu = this.displayMenu.bind(this);
+              this.handleChange = this.handleChange.bind(this);
+              this.hideMenu = this.hideMenu.bind(this);
+              }
+              handleChange(event) {
+              this.setState({
+              input: event.target.value
+              });
+              }
+              hideMenu() {
+              //hide the textarea form
+              this.setState({ show: false });
+              }
+              displayMenu() {
+              //display the textarea form
+              this.setState({ show: true });
+              }
+              addcard(event) {
+              //add new card
+              event.preventDefault();
+              if (this.state.input.trim() !== "") {
+              let newlist = [...this.state.cards];
+              newlist.push({ title: this.state.input });
+              this.setState({
+                 input: "",
+                 cards: newlist
+              });
+              }
+              }
+              cardList() {
+              //list the cards
+              let arr = this.state.cards.map((card, item) => {
+              return <li key={item + card.title}>
+                 <div className="white">{card.title}</div>
+              </li>;
+              });
+              return <ul id="dv">{arr}</ul>;
+              }
+              render() {
+              if (typeof this.props.list !== "object" || !(this.props.list.hasOwnProperty('title'))) {
+              return <h1>No List found!</h1>;
+              }
+              return <div>
+              {this.cardList()}
+              <div className={this.state.show ? "" : "hiddentextarea"}>
+                 <form id="usrform" onSubmit={this.addcard}>
+                     <p>
+                         <textarea className="w-100" value={this.state.input}
+                             onChange={this.handleChange}
+                             placeholder="Enter a title for this card" required />
+                     </p>
+                     <p>
+                         <input type="submit" value="Add card" />
+                         <button form="" onClick={this.hideMenu}>X</button>
+                     </p>
+                 </form>
+              </div>
+              <button onClick={this.displayMenu} className={this.state.show ? "hiddentextarea" : ""}>
+                 Add another card
+              </button>
+              </div>
+              }
+              }
+              */
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10,148 +85,51 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ListComponent = function (_React$Component) {
-    _inherits(ListComponent, _React$Component);
-
-    function ListComponent(props) {
-        _classCallCheck(this, ListComponent);
-
-        var _this = _possibleConstructorReturn(this, (ListComponent.__proto__ || Object.getPrototypeOf(ListComponent)).call(this, props));
-
-        _this.state = {
-            show: false,
-            cards: [],
-            input: ""
-        };
-        _this.cardList = _this.cardList.bind(_this);
-        _this.addcard = _this.addcard.bind(_this);
-        _this.displayMenu = _this.displayMenu.bind(_this);
-        _this.handleChange = _this.handleChange.bind(_this);
-        _this.hideMenu = _this.hideMenu.bind(_this);
-        return _this;
-    }
-
-    _createClass(ListComponent, [{
-        key: "handleChange",
-        value: function handleChange(event) {
-            this.setState({
-                input: event.target.value
-            });
-        }
-    }, {
-        key: "hideMenu",
-        value: function hideMenu() {
-            //hide the textarea form
-            this.setState({ show: false });
-        }
-    }, {
-        key: "displayMenu",
-        value: function displayMenu() {
-            //display the textarea form
-            this.setState({ show: true });
-        }
-    }, {
-        key: "addcard",
-        value: function addcard(event) {
-            //add new card
-            event.preventDefault();
-            if (this.state.input.trim() !== "") {
-                var newlist = [].concat(_toConsumableArray(this.state.cards));
-                newlist.push({ title: this.state.input });
-                this.setState({
-                    input: "",
-                    cards: newlist
-                });
-            }
-        }
-    }, {
-        key: "cardList",
-        value: function cardList() {
-            //list the cards
-            var arr = this.state.cards.map(function (card, item) {
-                return React.createElement(
-                    "li",
-                    { key: item + card.title },
-                    React.createElement(
-                        "div",
-                        { className: "white" },
-                        card.title
-                    )
-                );
-            });
-            return React.createElement(
-                "ul",
-                { id: "dv" },
-                arr
-            );
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            if (_typeof(this.props.list) !== "object" || !this.props.list.hasOwnProperty('title')) {
-                return React.createElement(
-                    "h1",
-                    null,
-                    "No List found!"
-                );
-            }
-
-            return React.createElement(
-                "div",
-                null,
-                this.cardList(),
-                React.createElement(
-                    "div",
-                    { className: this.state.show ? "" : "hiddentextarea" },
-                    React.createElement(
-                        "form",
-                        { id: "usrform", onSubmit: this.addcard },
-                        React.createElement(
-                            "p",
-                            null,
-                            React.createElement("textarea", { className: "w-100", value: this.state.input,
-                                onChange: this.handleChange,
-                                placeholder: "Enter a title for this card", required: true })
-                        ),
-                        React.createElement(
-                            "p",
-                            null,
-                            React.createElement("input", { type: "submit", value: "Add card" }),
-                            React.createElement(
-                                "button",
-                                { form: "", onClick: this.hideMenu },
-                                "X"
-                            )
-                        )
-                    )
-                ),
-                React.createElement(
-                    "button",
-                    { onClick: this.displayMenu, className: this.state.show ? "hiddentextarea" : "" },
-                    "Add another card"
-                )
-            );
-        }
-    }]);
-
-    return ListComponent;
-}(React.Component);
-
-var BoardComponent = function (_React$Component2) {
-    _inherits(BoardComponent, _React$Component2);
+var BoardComponent = function (_React$Component) {
+    _inherits(BoardComponent, _React$Component);
 
     function BoardComponent(props) {
         _classCallCheck(this, BoardComponent);
 
-        var _this2 = _possibleConstructorReturn(this, (BoardComponent.__proto__ || Object.getPrototypeOf(BoardComponent)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (BoardComponent.__proto__ || Object.getPrototypeOf(BoardComponent)).call(this, props));
 
-        _this2.state = {
+        _this.onDragEnd = function (result) {
+
+            var newlist = [].concat(_toConsumableArray(_this.state.lists));
+            if (result.source.droppableId === result.destination.droppableId) {
+                console.log("Call");
+                if (result.source.index < result.destination.index) {
+                    newlist[result.source.droppableId].cards = _this.swapArray(newlist[result.source.droppableId].cards, result.source.index, result.destination.index);
+
+                    //console.log(newlist[id].cards);
+                    _this.setState({
+                        lists: newlist
+                    });
+                } else if (result.source.index > result.destination.index) {
+                    newlist[result.source.droppableId].cards = _this.swapArray2(newlist[result.source.droppableId].cards, result.source.index, result.destination.index);
+
+                    _this.setState({
+                        lists: newlist
+                    });
+                }
+            } else {
+                newlist[result.destination.droppableId].cards.splice(result.destination.index, 0, newlist[result.source.droppableId].cards[result.source.index]);
+                newlist[result.source.droppableId].cards.splice(result.source.index, 1);
+                _this.setState({
+                    lists: newlist
+                });
+            }
+        };
+
+        _this.state = {
             lists: [{
+                id: "L0",
                 title: "Stuff to try (this is a list)",
-                cards: [{ title: "Studff" }, { title: "Studff" }]
+                cards: [{ id: "C0", title: "A" }, { id: "C1", title: "B" }]
             }, {
-                title: "Stuff to try (this is a list)",
-                cards: []
+                id: "L1",
+                title: "Another List",
+                cards: [{ id: "C2", title: "X" }, { id: "C3", title: "Y" }, { id: "C4", title: "Z" }]
             }],
             input: "",
             show: false,
@@ -160,37 +138,41 @@ var BoardComponent = function (_React$Component2) {
             titleinput: "",
             cardinput: ""
         };
-        _this2.cardList = _this2.cardList.bind(_this2);
-        _this2.listOfList = _this2.listOfList.bind(_this2);
-        _this2.addList = _this2.addList.bind(_this2);
-        _this2.displayForm = _this2.displayForm.bind(_this2);
-        _this2.hideForm = _this2.hideForm.bind(_this2);
-        _this2.handleChange = _this2.handleChange.bind(_this2);
-        _this2.handleTitleChange = _this2.handleTitleChange.bind(_this2);
-        _this2.edits = [];
-        _this2.shows = [];
-        _this2.addcards = [];
-        _this2.cardshow = [];
-        _this2.handleCardChanges = [];
-        _this2.handleCardChange = _this2.handleCardChange.bind(_this2);
-        _this2.hideCardMenu = _this2.displayCardMenu.bind(_this2);
-        _this2.displayCardMenus = [];
-        _this2.ListCom = _this2.ListCom.bind(_this2);
-        var listlength = _this2.state.lists.length;
+        _this.listId = 2;
+        _this.cardsId = 5;
+        _this.cardList = _this.cardList.bind(_this);
+        _this.listOfList = _this.listOfList.bind(_this);
+        _this.addList = _this.addList.bind(_this);
+        _this.displayForm = _this.displayForm.bind(_this);
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleTitleChange = _this.handleTitleChange.bind(_this);
+        _this.hideTitleEditor = _this.hideTitleEditor.bind(_this);
+        _this.ListComonpent = _this.ListComonpent.bind(_this);
+        _this.handleCardChange = _this.handleCardChange.bind(_this);
+        _this.hideCardMenu = _this.displayCardMenu.bind(_this);
+        _this.onDragEnd = _this.onDragEnd.bind(_this);
+        //Bind methods to different lists
+        _this.edits = [];
+        _this.shows = [];
+        _this.addcards = [];
+        _this.displayCardMenus = [];
+        var listlength = _this.state.lists.length;
         for (var i = 0; i < listlength; i++) {
             //I am trying to bind the index of lists to method
-            //to make sure each changeListTitle and showTitleEditor method work for different lists
-            _this2.edits.push(_this2.changeListTitle.bind(_this2, i));
-            _this2.shows.push(_this2.showTitleEditor.bind(_this2, i));
-            _this2.displayCardMenus.push(_this2.displayCardMenu.bind(_this2, i));
-            _this2.addcards.push(_this2.addcard.bind(_this2, i));
+            //to make sure each changeListTitle and showTitleEditor
+            //method work for different lists
+            _this.edits.push(_this.changeListTitle.bind(_this, i));
+            _this.shows.push(_this.showTitleEditor.bind(_this, i));
+            _this.displayCardMenus.push(_this.displayCardMenu.bind(_this, i));
+            _this.addcards.push(_this.addcard.bind(_this, i));
         }
-        return _this2;
+        return _this;
     }
 
     _createClass(BoardComponent, [{
         key: "falseCardShowsList",
         value: function falseCardShowsList(length) {
+
             var newcardshows = [];
             for (var i = 0; i < length; i++) {
                 newcardshows[i] = false;
@@ -219,80 +201,57 @@ var BoardComponent = function (_React$Component2) {
             });
         }
     }, {
-        key: "ListCom",
-        value: function ListCom(cardlist, cardshow, addcard, cardinput, displayCardMenu) {
+        key: "ListComonpent",
+        value: function ListComonpent(cardlist) {
             return React.createElement(
                 "div",
                 null,
-                cardlist,
-                React.createElement(
-                    "div",
-                    { className: cardshow ? "" : "hiddentextarea" },
-                    React.createElement(
-                        "form",
-                        { id: "usrform", onSubmit: addcard },
-                        React.createElement(
-                            "p",
-                            null,
-                            React.createElement("textarea", { className: "w-100", value: cardinput,
-                                onChange: this.handleCardChange,
-                                placeholder: "Enter a title for this card", required: true })
-                        ),
-                        React.createElement(
-                            "p",
-                            null,
-                            React.createElement(
-                                "button",
-                                { form: "", onClick: addcard },
-                                "Add card"
-                            ),
-                            React.createElement(
-                                "button",
-                                { form: "", onClick: this.hideCardMenu },
-                                "X"
-                            )
-                        )
-                    )
-                ),
-                React.createElement(
-                    "button",
-                    { onClick: displayCardMenu, className: cardshow ? "hiddentextarea" : "" },
-                    "Add another card"
-                )
+                cardlist
             );
         }
     }, {
         key: "cardList",
-        value: function cardList(cards) {
+        value: function cardList() {
+            var cards = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
             //list the cards
-            var arr = cards.map(function (card, item) {
-                return React.createElement(
-                    "li",
-                    { key: item + card.title },
-                    React.createElement(
-                        "div",
-                        { className: "white" },
-                        card.title
-                    )
-                );
-            });
-            return React.createElement(
-                "ul",
-                { id: "dv" },
-                arr
-            );
+            if ((typeof cards === "undefined" ? "undefined" : _typeof(cards)) === 'object' && typeof cards.map === 'function') {
+
+                var arr = cards.map(function (card, index) {
+                    return React.createElement(
+                        ReactBeautifulDnd.Draggable,
+                        { key: card.id, draggableId: card.id, index: index },
+                        function (provided) {
+                            return React.createElement(
+                                "div",
+                                Object.assign({}, provided.draggableProps, provided.dragHandleProps, { ref: provided.innerRef }),
+                                React.createElement(
+                                    "div",
+                                    { className: "white" },
+                                    card.title + "(" + card.id + ")"
+                                )
+                            );
+                        }
+                    );
+                });
+                return arr;
+            }
+            return [];
         }
     }, {
         key: "addcard",
         value: function addcard(id) {
+
             event.preventDefault();
             if (this.state.cardinput.trim() !== "") {
                 var newlist = [].concat(_toConsumableArray(this.state.lists));
-                newlist[id].cards.push({ title: this.state.cardinput });
+                newlist[id].cards.push({ id: "C" + this.cardsId, title: this.state.cardinput });
                 this.setState({
+                    id: newlist[id],
                     cardinput: "",
                     lists: newlist
                 });
+                this.cardsId++;
             }
         }
     }, {
@@ -307,6 +266,16 @@ var BoardComponent = function (_React$Component2) {
 
             this.setState({
                 displays: newdisplay,
+                titleinput: ""
+            });
+        }
+    }, {
+        key: "hideTitleEditor",
+        value: function hideTitleEditor() {
+            this.setState({
+                displays: [].concat(_toConsumableArray(this.state.displays)).map(function (item) {
+                    return false;
+                }),
                 titleinput: ""
             });
         }
@@ -340,6 +309,7 @@ var BoardComponent = function (_React$Component2) {
                 var newdisplay = [].concat(_toConsumableArray(this.state.displays));
                 var newcards = [].concat(_toConsumableArray(newlist[id].cards));
                 newlist[id] = {
+                    id: newlist[id].id,
                     title: this.state.titleinput,
                     cards: newcards
                 };
@@ -348,18 +318,32 @@ var BoardComponent = function (_React$Component2) {
             }
         }
     }, {
-        key: "hideForm",
-        value: function hideForm() {
-            this.setState({
-                show: false
+        key: "displayForm",
+        value: function displayForm() {
+            this.setState(function (state) {
+                return {
+                    show: !state.show
+                };
             });
         }
     }, {
-        key: "displayForm",
-        value: function displayForm() {
-            this.setState({
-                show: true
-            });
+        key: "swapArray2",
+        value: function swapArray2(array, source, destination) {
+            //reorder position when the source index is greater than destination index
+            var startarray = array.slice(0, destination);
+            var middlearray = array.slice(destination, source);
+            var endarray = array.slice(source + 1, array.length);
+            return [].concat(_toConsumableArray(startarray), [array[source]], _toConsumableArray(middlearray), _toConsumableArray(endarray));
+        }
+    }, {
+        key: "swapArray",
+        value: function swapArray(array, source, destination) {
+            //reorder position when the destination index is greater than source index
+            var startarray = array.slice(0, source);
+            var middlearray = array.slice(source + 1, destination + 1);
+            var endarray = array.slice(destination + 1, array.length);
+
+            return [].concat(_toConsumableArray(startarray), _toConsumableArray(middlearray), [array[source]], _toConsumableArray(endarray));
         }
     }, {
         key: "addList",
@@ -367,11 +351,16 @@ var BoardComponent = function (_React$Component2) {
             event.preventDefault();
             if (this.state.input.trim() !== "") {
                 var newlist = [].concat(_toConsumableArray(this.state.lists));
-                newlist.push({ title: this.state.input, cards: [] });
+                var realid = "L" + this.listId;
+                newlist.push(realid = {
+                    id: "L" + this.listId,
+                    title: this.state.input, cards: []
+                });
                 this.setState({
                     lists: newlist,
                     input: ""
                 });
+                this.listId++;
                 //Bind methods to new list again
                 this.edits.push(this.changeListTitle.bind(this, newlist.length - 1));
                 this.shows.push(this.showTitleEditor.bind(this, newlist.length - 1));
@@ -382,28 +371,70 @@ var BoardComponent = function (_React$Component2) {
     }, {
         key: "listOfList",
         value: function listOfList() {
-            var _this3 = this;
+            var _this2 = this;
 
             var arr = this.state.lists.map(function (list, index) {
                 return React.createElement(
                     "div",
-                    { className: "divclass", id: "1d" },
+                    { key: list.id, className: "divclass" },
                     React.createElement(
                         "strong",
                         {
-                            className: _this3.state.displays[index] ? "hiddentextarea" : "",
-                            onClick: _this3.shows[index] },
-                        list.title
+                            className: _this2.state.displays[index] ? "hiddentextarea" : "",
+                            onClick: _this2.shows[index] },
+                        list.title + "(" + list.id + ")"
                     ),
                     React.createElement(
                         "form",
-                        { className: _this3.state.displays[index] ? "" : "hiddentextarea",
-                            onSubmit: _this3.edits[index] },
-                        React.createElement("input", { onChange: _this3.handleTitleChange, value: _this3.state.titleinput,
+                        { className: _this2.state.displays[index] ? "" : "hiddentextarea",
+                            onSubmit: _this2.edits[index] },
+                        React.createElement("input", { autoFocus: true, onChange: _this2.handleTitleChange, value: _this2.state.titleinput,
                             type: "text", required: true }),
-                        React.createElement("input", { type: "submit", value: "Change list title" })
+                        React.createElement("input", { type: "submit", value: "Change list title" }),
+                        React.createElement(
+                            "button",
+                            { onClick: _this2.hideTitleEditor },
+                            "X"
+                        )
                     ),
-                    _this3.ListCom(_this3.cardList(list.cards), _this3.state.cardshows[index], _this3.addcards[index], _this3.state.cardinput, _this3.displayCardMenus[index])
+                    React.createElement(
+                        ReactBeautifulDnd.Droppable,
+                        { key: list.id, droppableId: index.toString() },
+                        function (provided) {
+                            return React.createElement(
+                                "div",
+                                Object.assign({ className: "Container" }, provided.droppableProps, {
+                                    ref: provided.innerRef }),
+                                _this2.ListComonpent(_this2.cardList(list.cards), _this2.state.cardshows[index], _this2.addcards[index], _this2.state.cardinput, _this2.displayCardMenus[index]),
+                                provided.placeholder
+                            );
+                        }
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: _this2.state.cardshows[index] ? "" : "hiddentextarea" },
+                        React.createElement(
+                            "form",
+                            { onSubmit: _this2.addcards[index] },
+                            React.createElement("textarea", { autoFocus: true, className: "w-100", value: _this2.state.cardinput,
+                                onChange: _this2.handleCardChange,
+                                placeholder: "Enter a title for this card", required: true }),
+                            React.createElement("br", null),
+                            "                            ",
+                            React.createElement("input", { type: "submit", value: "Add card" }),
+                            React.createElement(
+                                "button",
+                                { onClick: _this2.hideCardMenu },
+                                "X"
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        "button",
+                        { onClick: _this2.displayCardMenus[index],
+                            className: _this2.state.cardshows[index] ? "hiddentextarea" : "" },
+                        "Add another card"
+                    )
                 );
             });
             return arr;
@@ -412,35 +443,40 @@ var BoardComponent = function (_React$Component2) {
         key: "render",
         value: function render() {
             return React.createElement(
-                "div",
-                null,
-                this.listOfList(),
+                ReactBeautifulDnd.DragDropContext,
+                { onDragEnd: this.onDragEnd },
                 React.createElement(
                     "div",
-                    { className: "divclass" },
+                    null,
+                    this.listOfList(),
                     React.createElement(
-                        "button",
-                        { className: this.state.show ? "hiddentextarea" : "",
-                            onClick: this.displayForm },
-                        "Add another List"
-                    ),
-                    React.createElement(
-                        "form",
-                        { id: "on0", className: "small " + (this.state.show ? "" : "hiddentextarea"),
-                            onSubmit: this.addList },
+                        "div",
+                        { className: "divclass" },
                         React.createElement(
-                            "p",
-                            null,
-                            React.createElement("input", { onChange: this.handleChange, value: this.state.input, type: "text", required: true })
+                            "button",
+                            { className: this.state.show ? "hiddentextarea" : "",
+                                onClick: this.displayForm },
+                            "Add another List"
                         ),
                         React.createElement(
-                            "p",
-                            null,
-                            React.createElement("input", { type: "submit", value: "Add list" }),
+                            "form",
+                            { id: "on0", className: "small " + (this.state.show ? "" : "hiddentextarea"),
+                                onSubmit: this.addList },
                             React.createElement(
-                                "button",
-                                { form: "", onClick: this.hideForm },
-                                "X"
+                                "p",
+                                null,
+                                React.createElement("input", { onChange: this.handleChange,
+                                    value: this.state.input, type: "text", required: true })
+                            ),
+                            React.createElement(
+                                "p",
+                                null,
+                                React.createElement("input", { type: "submit", value: "Add list" }),
+                                React.createElement(
+                                    "button",
+                                    { onClick: this.displayForm },
+                                    "X"
+                                )
                             )
                         )
                     )
