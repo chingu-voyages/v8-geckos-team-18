@@ -100,11 +100,13 @@ class BoardComponent extends React.Component {
                 show: false,
                 cardshows: [],
                 displays: [],
+                actionlistdisplays: [],
                 titleinput: "",
                 cardinput: ""
             }
         this.listId = 2;
         this.cardsId = 5;
+        this.clickOutsideTarget = this.clickOutsideTarget.bind(this);
         this.cardList = this.cardList.bind(this);
         this.listOfList = this.listOfList.bind(this);
         this.addList = this.addList.bind(this);
@@ -121,6 +123,9 @@ class BoardComponent extends React.Component {
         this.shows = [];
         this.addcards = [];
         this.displayCardMenus = [];
+        this.displayActionLists = [];
+        this.deletelists = [];
+        this.copylists = [];
         let listlength = this.state.lists.length;
         for (let i = 0; i < listlength; i++) {
             //I am trying to bind the index of lists to method
@@ -129,17 +134,42 @@ class BoardComponent extends React.Component {
             this.edits.push(this.changeListTitle.bind(this, i));
             this.shows.push(this.showTitleEditor.bind(this, i));
             this.displayCardMenus.push(this.displayCardMenu.bind(this, i));
+            this.displayActionLists.push(this.displayActionList.bind(this, i));
             this.addcards.push(this.addcard.bind(this, i));
+            this.deletelists.push(this.deleteList.bind(this, i));
+            this.copylists.push(this.copyList.bind(this, i));
         }
     }
 
+    clickOutsideTarget() {
+        window.onclick = (event) => {
+            if (!event.target.matches(".actionbutton")) {
+                this.setState({
+                    actionlistdisplays: this.falseShowActionList(this.state.actionlistdisplays.length)
+                });
+            }
+        };
+    }
+
+    componentDidMount() {
+
+    }
+
     falseCardShowsList(length) {
-    
+
         let newcardshows = [];
         for (let i = 0; i < length; i++) {
             newcardshows[i] = false;
         }
         return newcardshows;
+    }
+
+    falseShowActionList(length) {
+        let newarr = [];
+        for (let i = 0; i < length; i++) {
+            newarr[i] = false;
+        }
+        return newarr;
     }
 
     hideCardMenu() {
@@ -159,6 +189,19 @@ class BoardComponent extends React.Component {
             cardshows: newcardshows,
             cardinput: ""
         });
+
+        window.setTimeout(() => document.getElementById("addcardid" + id).focus(), 0);
+    }
+
+    displayActionList(id) {
+        let newactionlistdisplays = this.falseShowActionList(this.state.actionlistdisplays.length);
+
+        if (!this.state.actionlistdisplays[id]) {
+            newactionlistdisplays[id] = true;
+        }
+        this.setState({
+            actionlistdisplays: newactionlistdisplays
+        });
     }
 
     ListComonpent(cardlist) {
@@ -175,12 +218,12 @@ class BoardComponent extends React.Component {
                 return <ReactBeautifulDnd.Draggable key={card.id} draggableId={card.id} index={index}>
                     {(provided) => (<div {...provided.draggableProps}
                         {...provided.dragHandleProps} ref={provided.innerRef}>
-                        <div className="white">{card.title + "(" + card.id + ")"}</div>
+                        <li><div className="white cardtitle">{card.title + "(" + card.id + ")"}<div><button>...</button></div></div></li>
                     </div>)}
 
                 </ReactBeautifulDnd.Draggable>;
             });
-            return arr;
+            return <ul>{arr}</ul>;
         }
         return [];
     }
@@ -213,6 +256,9 @@ class BoardComponent extends React.Component {
             displays: newdisplay,
             titleinput: ""
         });
+        window.setTimeout(function () {
+            document.getElementById("titlechange" + id).focus();
+        }, 0);
     }
 
     hideTitleEditor() {
@@ -263,6 +309,8 @@ class BoardComponent extends React.Component {
         this.setState((state) => ({
             show: !state.show
         }));
+        window.setTimeout(() => document.getElementById("addlistid").focus(), 0);
+
     }
 
     swapArray2(array, source, destination) {
@@ -343,22 +391,78 @@ class BoardComponent extends React.Component {
             this.shows.push(this.showTitleEditor.bind(this, newlist.length - 1));
             this.displayCardMenus.push(this.displayCardMenu.bind(this, newlist.length - 1));
             this.addcards.push(this.addcard.bind(this, newlist.length - 1));
+            this.deletelists.push(this.deleteList.bind(this, newlist.length - 1));
+            this.displayActionLists.push(this.displayActionList.bind(this, newlist.length - 1));
+
         }
 
     }
 
+    deleteList(id) {
+        let temp = [...this.state.lists];
+        temp.splice(id, 1);
+        this.setState({
+            lists: temp
+        });
+    }
+
+    copyList(id)
+    {
+        let newlist = [...this.state.lists];
+        let newarr = newlist[id].cards.map((card) => 
+        {
+            let obj = {
+                id : "C" + this.cardsId,
+                title:card.title
+            };
+            this.cardsId++;
+            return obj;
+        })
+        
+        let templist = {
+            id:"L" + this.listId,
+            title:newlist[id].title,
+            cards:newarr
+        };
+        
+        newlist.push(templist);
+        this.setState({
+            lists:newlist
+        });
+        this.listId++;
+        this.edits.push(this.changeListTitle.bind(this, newlist.length - 1));
+        this.shows.push(this.showTitleEditor.bind(this, newlist.length - 1));
+        this.displayCardMenus.push(this.displayCardMenu.bind(this, newlist.length - 1));
+        this.addcards.push(this.addcard.bind(this, newlist.length - 1));
+        this.deletelists.push(this.deleteList.bind(this, newlist.length - 1));
+        this.copylists.push(this.copyList.bind(this,newlist.length-1));
+        this.displayActionLists.push(this.displayActionList.bind(this, newlist.length - 1));
+        
+    }
+
     listOfList() {
         let arr = this.state.lists.map((list, index) => {
-            return <div key={list.id} className="divclass"><strong
+            return <div key={list.id} className="divclass"><div className="listtitle"><h6
                 className={this.state.displays[index] ? "hiddentextarea" : ""}
-                onClick={this.shows[index]}>{list.title + "(" + list.id + ")"}</strong>
+                onClick={this.shows[index]}>{list.title + "(" + list.id + ")"}</h6>
                 <form className={this.state.displays[index] ? "" : "hiddentextarea"}
                     onSubmit={this.edits[index]}>
-                    <input autoFocus onChange={this.handleTitleChange} value={this.state.titleinput}
-                        type="text" required />
+                    <input id={"titlechange" + index} onChange={this.handleTitleChange} 
+                    value={this.state.titleinput}
+                        type="text" />
                     <input type="submit" value="Change list title" />
                     <button onClick={this.hideTitleEditor}>X</button>
                 </form>
+                <div><button className="actionbutton" onClick={this.displayActionLists[index]}>...</button>
+                    <div className={"actionlist " + 
+                    (this.state.actionlistdisplays[index] ? "f" : "hiddentextarea")}>
+
+                        <button className="actionbutton" onClick={this.deletelists[index]}>Delete List</button>
+                        <br/>
+                        <button className="actionbutton" onClick={this.copylists[index]}>Copy List</button>
+                    </div></div>
+
+            </div>
                 <ReactBeautifulDnd.Droppable key={list.id} droppableId={index.toString()}>
 
                     {(provided) => (<div className="Container" {...provided.droppableProps}
@@ -372,9 +476,9 @@ class BoardComponent extends React.Component {
                 </ReactBeautifulDnd.Droppable>
                 <div className={this.state.cardshows[index] ? "" : "hiddentextarea"}>
                     <form onSubmit={this.addcards[index]}>
-                        <textarea autoFocus className="w-100" value={this.state.cardinput}
+                        <textarea id={"addcardid" + index} className="w-100" value={this.state.cardinput}
                             onChange={this.handleCardChange}
-                            placeholder="Enter a title for this card" required />
+                            placeholder="Enter a title for this card" />
                         <br />                            <input type="submit" value="Add card" />
                         <button onClick={this.hideCardMenu}>X</button>
                     </form>
@@ -388,6 +492,7 @@ class BoardComponent extends React.Component {
     }
 
     render() {
+        { this.clickOutsideTarget() }
         return <ReactBeautifulDnd.DragDropContext onDragEnd={this.onDragEnd}>
 
             <div>
@@ -398,8 +503,8 @@ class BoardComponent extends React.Component {
                     <form id="on0" className={"small " + (this.state.show ? "" : "hiddentextarea")}
                         onSubmit={this.addList}>
                         <p>
-                            <input onChange={this.handleChange}
-                                value={this.state.input} type="text" required />
+                            <input id="addlistid" onChange={this.handleChange}
+                                value={this.state.input} type="text" />
                         </p>
                         <p>
                             <input type="submit" value="Add list" />
