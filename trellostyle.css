@@ -22,6 +22,8 @@ html,body
 
 .whitetext
 {
+	margin:5px;
+	padding-top:10px;
 	color:white;
 }
 
@@ -33,13 +35,13 @@ html,body
 	background-color:white;
 	font-size:15px;
 	white-space:normal;
-
 }
 
 .listtitle
 {
 	display:flex;
 	justify-content:space-between;
+	word-break: break-all;
 }
 
 .actionlist
@@ -50,10 +52,22 @@ html,body
   z-index: 1;
 }
 
+.inline
+{
+	margin-left:5px;
+	display:inline-block;
+}
+
+.actioncard
+{
+	
+}
+
 .cardtitle
 {
 	display:flex;
 	justify-content: space-between;
+	word-break: break-all;
 }
 
 .white:hover
@@ -87,7 +101,6 @@ ul {
   display:inline-table;
   background-color:#eee;
   	white-space:normal;
-
 	
 }
 
