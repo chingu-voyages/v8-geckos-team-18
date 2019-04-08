@@ -1,5 +1,74 @@
 "use strict";
 
+class BoardTitleComponent extends React.Component
+{
+    constructor(props) {
+        super(props);
+        this.state = {
+            boardtitle: "Editable board title",
+            tempboardtitle: "Editable board title",
+            showboardtitleeditor:false
+        }
+
+        this.clickOutsideTarget = this.clickOutsideTarget.bind(this);
+        this.changeBoardTitle = this.changeBoardTitle.bind(this);
+        this.showBoardTitleEditor = this.showBoardTitleEditor.bind(this);
+
+    }
+
+    clickOutsideTarget()
+    {            
+
+        window.addEventListener("click",((event)=>{
+            if (!event.target.matches(".boardtitle")
+                && this.state.showboardtitleeditor) {
+                this.setState({
+                    showboardtitleeditor: false
+                });
+
+                if (this.state.tempboardtitle.trim() !== "") {
+                    this.setState({
+                        boardtitle: this.state.tempboardtitle
+                    });
+                }
+                else {
+                    this.setState({
+                        tempboardtitle: this.state.boardtitle
+                    });
+                }
+
+            }
+        }));
+    }
+
+    changeBoardTitle() {
+        this.setState(
+            {
+                tempboardtitle: event.target.value
+            }
+        );
+    }
+
+    showBoardTitleEditor() {
+        this.setState(
+            {
+                showboardtitleeditor: true
+            }
+        );
+        window.setTimeout(() => document.getElementById("boardtitleeditor").select(), 0);
+    }
+
+    render()
+    {
+        this.clickOutsideTarget();
+        console.log(this.state.showboardtitleeditor);
+        console.log("BoardTitle render");
+        return (<div><p  className={"whitetext " + (this.state.showboardtitleeditor ? "hiddentextarea" : "")}><b onClick={this.showBoardTitleEditor} className="actlikebutton padding5px boardtitle">{this.state.boardtitle}</b></p>
+        <p className={"whitetext boardtitle " + (this.state.showboardtitleeditor ? "" : "hiddentextarea")}><input id="boardtitleeditor" className="boardtitle" type="text" onChange={this.changeBoardTitle} value={this.state.tempboardtitle} /></p></div>);
+        
+    }
+}
+
 class BoardComponent extends React.Component {
 
     constructor(props) {
@@ -15,11 +84,26 @@ class BoardComponent extends React.Component {
                     cards: [{
                         id: "C0", title: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                         displayaction: false
-                    }, { id: "C1", title: "B", displayaction: false }]
+                    }, { id: "C1", title: "Familiarize yourself with git + github", displayaction: false }]
                 }, {
                     id: "L1",
                     title: "Another Listttttttttttttttttttttttttttttttttttttttttttttttttttt",
-                    cards: [{ id: "C2", title: "X", displayaction: false }, { id: "C3", title: "Y", displayaction: false }, { id: "C4", title: "Z", displayaction: false }]
+                    cards: [{ id: "C3", title: "X", displayaction: false }, { id: "C4", title: "Y", displayaction: false }, { id: "C5", title: "Z", displayaction: false }]
+                }, {
+                    id: "L2",
+                    title: "Bonus Considerations",
+                    cards: [{ id: "C6", title: "Test Units", displayaction: false },
+                    { id: "C7", title: "Make it mobile responsive", displayaction: false },
+                    {
+                        id: "C8",
+                        title: "Create a bookself for the users that stores bookmarked books",
+                        displayaction: false
+                    },
+                    {
+                        id: "C9",
+                        title: "On search input, display the last 10 search queries.",
+                        displayaction: false
+                    }]
                 }],
                 input: "",
                 show: false,
@@ -31,8 +115,8 @@ class BoardComponent extends React.Component {
                 cardinput: ""
             }
         this.temptext = "";
-        this.listId = 2;
-        this.cardsId = 5;
+        this.listId = 3;
+        this.cardsId = 10;
         let tempcardsid = this.cardsId;
         this.clickOutsideTarget = this.clickOutsideTarget.bind(this);
         this.changeBoardTitle = this.changeBoardTitle.bind(this);
@@ -88,41 +172,16 @@ class BoardComponent extends React.Component {
         }
     }
 
-
-    componentDidMount() {
-        window.onClick = (event) => {
-            console.log("F");
-        }
-    }
-
     clickOutsideTarget() {
-        window.onclick = (event) => {
-            if (!event.target.matches(".actionbutton")
-             && this.state.actionlistdisplays.includes(true)) {
+        window.addEventListener("click", (event) => {
+                if (!event.target.matches(".actionbutton")
+                && this.state.actionlistdisplays.includes(true)) {
                 this.setState({
                     actionlistdisplays: this.falseCardShowsList(this.state.actionlistdisplays.length),
                 });
             }
 
-            if (!event.target.matches(".boardtitle")
-            && this.state.showboardtitleeditor) {
-                this.setState({
-                    showboardtitleeditor: false
-                });
-
-                if (this.state.boardtitle.trim() !== "") {
-                    this.setState({
-                        tempboardtitle: this.state.boardtitle
-                    });
-                }
-                else {
-                    this.setState({
-                        boardtitle: this.state.tempboardtitle
-                    });
-                }
-
-            }
-        };
+        });
     }
 
     falseCardShowsList(length) {
@@ -156,6 +215,7 @@ class BoardComponent extends React.Component {
     }
 
     displayActionCard(id) {
+        console.log(id);
         this.setState(
             {
                 actioncarddisplays: this.makeListTrue(this.state.actioncarddisplays[id], id, this.state.actioncarddisplays)
@@ -196,8 +256,8 @@ class BoardComponent extends React.Component {
                 return <ReactBeautifulDnd.Draggable key={card.id} draggableId={card.id} index={index}>
                     {(provided) => (<div {...provided.draggableProps}
                         {...provided.dragHandleProps} ref={provided.innerRef}>
-                        <li><div className="white cardtitle">{card.title + "(" + card.id + ")"}<div>
-                            <button className="actionbutton" onClick={this.listDisplayActionCards[realid]}>...</button>
+                        <li><div className="white cardtitle"><p className="fixwidth">{card.title + " (" + card.id + ")"}</p><div>
+                            <button className="btn btn-sm actionbutton" onClick={this.listDisplayActionCards[realid]}>...</button>
                             <div className={"inline actionlist " + (this.state.actioncarddisplays[realid] ? "WPWWP" : "hiddentextarea")}>
                                 <button className="actionbutton" onClick={this.deletecards[id][index]}>Delete</button>
                                 <br />
@@ -341,13 +401,44 @@ class BoardComponent extends React.Component {
         return array;
     }
 
+    findindexById(array, id)
+    {
+        let length = array.length;
+        for (let i = 0; i < length;i++)
+        {
+            if (array[i].id === id)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     onDragEnd = (result) => {
 
+        if (!result.destination)
+        {
+            return;
+        }
+
+        if (result.type === "column")
+        {
+            let newlist = [...this.state.lists];
+            let target = {...newlist[result.source.index]};
+            newlist.splice(result.source.index,1);
+            newlist.splice(result.destination.index,0,target);
+            this.setState({
+                lists:newlist
+            });
+            return;
+        }
         let newlist = [...this.state.lists];
         if (result.source.droppableId === result.destination.droppableId) {
             if (result.source.index < result.destination.index) {
-                newlist[result.source.droppableId].cards =
-                    this.swapArray(newlist[result.source.droppableId].cards,
+                newlist[this.findindexById(
+                    newlist,result.source.droppableId)].cards =
+                    this.swapArray(newlist[this.findindexById(
+                        newlist,result.source.droppableId)].cards,
                         result.source.index, result.destination.index);
 
                 //console.log(newlist[id].cards);
@@ -358,8 +449,10 @@ class BoardComponent extends React.Component {
                 );
             }
             else if (result.source.index > result.destination.index) {
-                newlist[result.source.droppableId].cards =
-                    this.swapArray2(newlist[result.source.droppableId].cards,
+                newlist[this.findindexById(
+                    newlist,result.source.droppableId)].cards =
+                    this.swapArray2(newlist[this.findindexById(
+                        newlist,result.source.droppableId)].cards,
                         result.source.index, result.destination.index);
 
                 this.setState(
@@ -370,9 +463,12 @@ class BoardComponent extends React.Component {
             }
         }
         else {
-            newlist[result.destination.droppableId].cards.splice(result.destination.index, 0,
-                newlist[result.source.droppableId].cards[result.source.index]);
-            newlist[result.source.droppableId].cards.splice(result.source.index, 1);
+            newlist[this.findindexById(
+                newlist,result.destination.droppableId)].cards.splice(result.destination.index, 0,
+                newlist[this.findindexById(
+                    newlist,result.source.droppableId)].cards[result.source.index]);
+            newlist[this.findindexById(
+                newlist,result.source.droppableId)].cards.splice(result.source.index, 1);
             this.setState(
                 {
                     lists: newlist
@@ -450,29 +546,32 @@ class BoardComponent extends React.Component {
 
     listOfList() {
         let arr = this.state.lists.map((list, index) => {
-            return <div key={list.id} className="divclass"><div className="listtitle"><h6
+            return <ReactBeautifulDnd.Draggable key={list.id+"dropper"} draggableId={list.id} index={index}>
+            {(provided) => (
+            <div className="inlinetable" {...provided.draggableProps} ref={provided.innerRef}>
+            <div key={list.id} className="divclass "><div className="listtitle"><p {...provided.dragHandleProps}
                 className={this.state.displays[index] ? "hiddentextarea" : ""}
-                onClick={this.shows[index]}>{list.title + "(" + list.id + ")"}</h6>
+                onClick={this.shows[index]}><b>{list.title + " (" + list.id + ")"}</b></p>
                 <form className={this.state.displays[index] ? "" : "hiddentextarea"}
                     onSubmit={this.edits[index]}>
                     <input id={"titlechange" + index} onChange={this.handleTitleChange}
                         value={this.state.titleinput}
                         type="text" />
-                    <input type="submit" value="Change" />
-                    <button onClick={this.hideTitleEditor}>X</button>
+                    <input className="btn btn-sm btn-dark" type="submit" value="Change" />
+                    <button className="btn btn-sm btn-dark" onClick={this.hideTitleEditor}>X</button>
                 </form>
-                <div><button className="actionbutton" onClick={this.displayActionLists[index]}>...</button>
+                <div><button className="btn btn-sm actionbutton" onClick={this.displayActionLists[index]}>...</button>
 
                     <div className={"actionlist " +
                         (this.state.actionlistdisplays[index] ? "" : "hiddentextarea")}>
 
-                        <button className="actionbutton" onClick={this.deletelists[index]}>Delete</button>
+                        <button className="btn actionbutton" onClick={this.deletelists[index]}>Delete</button>
                         <br />
-                        <button className="actionbutton" onClick={this.copylists[index]}>Copy</button>
+                        <button className="btn actionbutton" onClick={this.copylists[index]}>Copy</button>
                     </div></div>
 
             </div>
-                <ReactBeautifulDnd.Droppable key={list.id} droppableId={index.toString()}>
+                <ReactBeautifulDnd.Droppable key={list.id} droppableId={list.id} type="task">
 
                     {(provided) => (<div className="Container" {...provided.droppableProps}
                         ref={provided.innerRef}>
@@ -483,17 +582,18 @@ class BoardComponent extends React.Component {
                 </ReactBeautifulDnd.Droppable>
                 <div className={this.state.cardshows[index] ? "" : "hiddentextarea"}>
                     <form onSubmit={this.addcards[index]}>
-                        <textarea id={"addcardid" + index} className="w-100" value={this.state.cardinput}
+                        <textarea maxLength={250} id={"addcardid" + index} className="w-100" value={this.state.cardinput}
                             onChange={this.handleCardChange}
                             placeholder="Enter a title for this card" />
-                        <br />                            <input type="submit" value="Add card" />
+                        <br />                            <input className="btn btn-sm btn-primary" type="submit" value="Add card" />
                         <button onClick={this.hideCardMenu}>X</button>
                     </form>
                 </div>
-                <button onClick={this.displayCardMenus[index]}
-                    className={this.state.cardshows[index] ? "hiddentextarea" : ""}>
-                    Add another card
-            </button></div>
+                <a href="#" role="button" onClick={this.displayCardMenus[index]}
+                    className={"" + (this.state.cardshows[index] ? "hiddentextarea" : "")}>
+                    Add a card
+            </a></div>
+            </div>)}</ReactBeautifulDnd.Draggable>
         });
         return arr;
     }
@@ -512,19 +612,27 @@ class BoardComponent extends React.Component {
                 showboardtitleeditor: true
             }
         );
+        window.setTimeout(() => document.getElementById("boardtitleeditor").select(), 0);
     }
 
     render() {
         { this.clickOutsideTarget() }
-        console.log("Render");
+        
         return <ReactBeautifulDnd.DragDropContext onDragEnd={this.onDragEnd}>
 
-            <div>
-                <p onClick={this.showBoardTitleEditor} className={"whitetext " + (this.state.showboardtitleeditor ? "hiddentextarea" : "")}><b className="boardtitle">{this.state.tempboardtitle}</b></p>
-                <p className={"whitetext boardtitle " + (this.state.showboardtitleeditor ? "" : "hiddentextarea")}><input className="boardtitle" type="text" onChange={this.changeBoardTitle} value={this.state.boardtitle} /></p>
-                {this.listOfList()}
+            <div className="h-100">
+            <BoardTitleComponent/>
+                <div className="inlinetable">
+                <ReactBeautifulDnd.Droppable droppableId="all-col" direction="horizontal" type="column">
+                    {(provided) => (
+                        <div className="inlinetable" {...provided.droppableProps} ref={provided.innerRef}>
+                            {this.listOfList()}
+                            {...provided.placeholder}
+                        </div>
+                    )}
+                </ReactBeautifulDnd.Droppable>
                 <div className="divclass">
-                    <button className={this.state.show ? "hiddentextarea" : ""}
+                    <button className={"btn btn-sm btn-light " + (this.state.show ? "hiddentextarea" : "")}
                         onClick={this.displayForm}>Add another List</button>
                     <form id="on0" className={"small " + (this.state.show ? "" : "hiddentextarea")}
                         onSubmit={this.addList}>
@@ -538,6 +646,7 @@ class BoardComponent extends React.Component {
                         </p>
                     </form>
                 </div>
+            </div>
             </div>
         </ReactBeautifulDnd.DragDropContext>;
     }
