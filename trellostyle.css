@@ -28,9 +28,9 @@ html,body
 	color:white;
 }
 
-.white 
+.white
 {
-	
+
 	border-bottom:5px solid #eee;
 	padding:5px;
 	background-color:white;
@@ -76,7 +76,7 @@ a:hover
 
 .actioncard
 {
-	
+
 }
 
 .cardtitle
@@ -123,7 +123,7 @@ ul {
 
 .Container
 {
-	min-height:50px;	
+	min-height:50px;
 	max-height:300px;
 	padding:8px;
 	overflow:auto;
@@ -137,7 +137,7 @@ ul {
   display:inline-table;
   background-color:#eee;
   	white-space:normal;
-	
+
 }
 
 .hiddentextarea {
@@ -147,4 +147,32 @@ ul {
 .block
 {
 	display:block;
+}
+
+/************************ Modal style ***************************/
+.modal-overlay {
+	background-color: #000;
+	left:0;
+	min-height: 100%;
+	min-width: 100%;
+	position: fixed;
+	top: 0;
+}
+
+.modal {
+	background-color: #f5f6f7;
+	display: block;
+	height: 50%;
+	left: 15%;
+	opacity: 1;
+	top: 25%;
+	width: 70%;
+}
+
+.modal>div:first-child {
+	margin: 10%;
+}
+
+.modal-header {
+	display: flex;
 }
