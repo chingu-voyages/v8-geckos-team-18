@@ -17,7 +17,7 @@ class BoardTitleComponent extends React.Component
     }
 
     clickOutsideTarget()
-    {            
+    {
 
         window.addEventListener("click",((event)=>{
             if (!event.target.matches(".boardtitle")
@@ -65,7 +65,7 @@ class BoardTitleComponent extends React.Component
         console.log("BoardTitle render");
         return (<div><p  className={"whitetext " + (this.state.showboardtitleeditor ? "hiddentextarea" : "")}><b onClick={this.showBoardTitleEditor} className="actlikebutton padding5px boardtitle">{this.state.boardtitle}</b></p>
         <p className={"whitetext boardtitle " + (this.state.showboardtitleeditor ? "" : "hiddentextarea")}><input id="boardtitleeditor" className="boardtitle" type="text" onChange={this.changeBoardTitle} value={this.state.tempboardtitle} /></p></div>);
-        
+
     }
 }
 
@@ -112,7 +112,11 @@ class BoardComponent extends React.Component {
                 actionlistdisplays: [],
                 actioncarddisplays: [],
                 titleinput: "",
-                cardinput: ""
+                cardinput: "",
+
+//************ for open card modal box********************//
+                showModal: false,
+                activeCard: undefined
             }
         this.temptext = "";
         this.listId = 3;
@@ -132,6 +136,8 @@ class BoardComponent extends React.Component {
         this.handleCardChange = this.handleCardChange.bind(this);
         this.hideCardMenu = this.displayCardMenu.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
+
+        this.toggleModal = this.toggleModal.bind(this);
         //Bind methods to different lists
         this.edits = [];
         this.shows = [];
@@ -256,7 +262,21 @@ class BoardComponent extends React.Component {
                 return <ReactBeautifulDnd.Draggable key={card.id} draggableId={card.id} index={index}>
                     {(provided) => (<div {...provided.draggableProps}
                         {...provided.dragHandleProps} ref={provided.innerRef}>
-                        <li><div className="white cardtitle"><p className="fixwidth">{card.title + " (" + card.id + ")"}</p><div>
+                        <li><div className="white cardtitle"  onClick={this.toggleModal.bind(this, card)}><p className="fixwidth">
+                              {card.title + " (" + card.id + ")"}
+                              {this.state.showModal ? (
+                                    <div className='modal-overlay'>
+                                      <div className="modal">
+                                        <div>
+                                          <div className="modal-header">
+                                            <h3>{this.state.activeCard.title}</h3>
+                                            <button onClick={this.toggleModal.bind(this, card)}>Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ) : null}
+                              </p><div>
                             <button className="btn btn-sm actionbutton" onClick={this.listDisplayActionCards[realid]}>...</button>
                             <div className={"inline actionlist " + (this.state.actioncarddisplays[realid] ? "WPWWP" : "hiddentextarea")}>
                                 <button className="actionbutton" onClick={this.deletecards[id][index]}>Delete</button>
@@ -617,7 +637,7 @@ class BoardComponent extends React.Component {
 
     render() {
         { this.clickOutsideTarget() }
-        
+
         return <ReactBeautifulDnd.DragDropContext onDragEnd={this.onDragEnd}>
 
             <div className="h-100">
@@ -649,6 +669,14 @@ class BoardComponent extends React.Component {
             </div>
             </div>
         </ReactBeautifulDnd.DragDropContext>;
+    }
+
+// ********************** Toggle open card modal box *****************************//
+    toggleModal=(card)=>{
+      this.setState({
+        showModal: !this.state.showModal,
+        activeCard: card
+      })
     }
 }
 
