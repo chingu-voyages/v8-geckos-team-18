@@ -26,7 +26,7 @@ let temps = function () {
                 id: "C9",
                 title: "On search input, display the last 10 search queries."
             }]
-        }],ids:{ 
+        }],ids:{
         listsId: 2,
         cardsId: 10
         }
@@ -53,13 +53,13 @@ let temps = function () {
     function addCardId()
     {
         tempdata.ids.cardsId++;
-        
+
     }
 
     function addListId()
     {
         tempdata.ids.listsId++;
-        
+
     }
 
     function changeTitle(title) {
@@ -229,7 +229,7 @@ class CardsComponent extends React.Component {
     }
 
     addCard() {
-        
+
         temps.getById(this.props.id).cards.push({
             id: "C" + temps.get().ids.cardsId,
             title: this.state.cardTitle
@@ -257,7 +257,7 @@ class CardsComponent extends React.Component {
         let tempcard = { id:"C"+temps.get().ids.cardsId,
         title:temps.getById(this.props.id).cards[index].title + "(1)" };
         temps.getById(this.props.id).cards.push(tempcard);
-        
+
         temps.addCardId();
 
         this.setState({
@@ -279,6 +279,20 @@ class CardsComponent extends React.Component {
             <button onClick={this.addCard}>Add card</button>
         </div>);
     }
+}
+
+class ActiveCardComponent extends React.Component {
+  render = () =>{
+    console.log(this.props.card);
+    return <div className='modal-overlay'>
+              <div className="modal">
+                <div className="modal-header">
+                  <h3>{this.props.card.title}</h3>
+                  <button onClick={this.props.toggleModal.bind(this, this.props.card)}>Close</button>
+                </div>
+              </div>
+            </div>
+  }
 }
 
 class BoardComponent extends React.Component {
@@ -321,7 +335,10 @@ class BoardComponent extends React.Component {
                 actionlistdisplays: [],
                 actioncarddisplays: [],
                 titleinput: "",
-                cardinput: ""
+                cardinput: "",
+
+                showModal: false,
+                activeCard: undefined
             }
         this.temptext = "";
         this.listId = 3;
@@ -341,6 +358,8 @@ class BoardComponent extends React.Component {
         this.handleCardChange = this.handleCardChange.bind(this);
         this.hideCardMenu = this.displayCardMenu.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
+
+        this.toggleModal = this.toggleModal.bind(this);
         //Bind methods to different lists
         this.edits = [];
         this.shows = [];
@@ -450,6 +469,14 @@ class BoardComponent extends React.Component {
         });
     }
 
+    // ********************** Toggle open card modal box *****************************//
+    toggleModal=(card)=>{
+      this.setState({
+        showModal: !this.state.showModal,
+        activeCard: card
+      })
+    }
+
     ListComonpent(cardlist) {
         return <div>
             {cardlist}
@@ -465,7 +492,12 @@ class BoardComponent extends React.Component {
                 return <ReactBeautifulDnd.Draggable key={card.id} draggableId={card.id} index={index}>
                     {(provided) => (<div {...provided.draggableProps}
                         {...provided.dragHandleProps} ref={provided.innerRef}>
-                        <li><div className="white cardtitle"><p className="fixwidth">{card.title + " (" + card.id + ")"}</p><div>
+                        <li><div className="white cardtitle" onClick={this.toggleModal.bind(this, card)}><p className="fixwidth">
+                              {card.title + " (" + card.id + ")"}
+                              {this.state.showModal ? (
+                                <ActiveCardComponent card={this.state.activeCard} toggleModal={this.toggleModal}/>
+                              ) : null}
+                            </p><div>
                             <button className="btn btn-sm actionbutton" onClick={this.listDisplayActionCards[realid]}>...</button>
                             <div className={"inline actionlist " + (this.state.actioncarddisplays[realid] ? "WPWWP" : "hiddentextarea")}>
                                 <button className="btn actionbutton" onClick={this.deletecards[id][index]}>Delete</button>
@@ -843,7 +875,7 @@ class BoardComponent extends React.Component {
                         {(provided) => (
                             <div className="inlinetable" {...provided.droppableProps} ref={provided.innerRef}>
                                 {this.listOfList()}
-                                {...provided.placeholder}
+                                {provided.placeholder}
                             </div>
                         )}
                     </ReactBeautifulDnd.Droppable>
