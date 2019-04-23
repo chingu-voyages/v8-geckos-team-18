@@ -253,7 +253,7 @@ class ListsComponent extends React.Component {
                 <div className="inlinetable" {...provided.droppableProps} ref={provided.innerRef}>
                     <div className="inlinetable">
                         {arr}
-                        {...provided.placeholder}
+                        {provided.placeholder}
                         <div className="divclass">
                             <button className={"btn btn-sm btn-light " + (this.state.showAddList ? "hiddentextarea" : "")}
                                 onClick={this.toggleAddList}>Add another List</button>
@@ -582,14 +582,32 @@ class CardsComponent extends React.Component {
 }
 
 class ActiveCardComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showDescription: false
+    }
+  }
+
+  toggleDescription = () =>{
+    this.setState = {
+      showDescription: true
+    }
+  }
+
   render = () =>{
-    return <div className='modal-overlay'>
+    return <div className="modal-overlay">
               <div className="modal">
                 <div className="modal-container">
                   <h3>{this.props.card.title}</h3>
                   <button className="close-modal" onClick={this.props.toggleModal.bind(this, this.props.card)}>X</button>
                   <div>
                     <h5>Description</h5>
+                    <div className="opencard-description" onClick={this.toggleDescription}>
+                      {this.state.showDescription ?
+                        <DescriptionComponent /> : null}
+                      <a>Add a detailed description...</a>
+                    </div>
                   </div>
                   <aside className='side-area'>
                     <div>
@@ -607,14 +625,26 @@ class ActiveCardComponent extends React.Component {
                       <a>Watch</a>
                     </div>
                   </aside>
-                  <div>
+                  <div className="opencard-comment">
                     <h5>Comment</h5>
+                    <textarea placeholder="Write a comment..."></textarea>
+                    <button>Save</button>
                   </div>
                 </div>
               </div>
             </div>
   }
 }
+
+const DescriptionComponent = () =>{
+  console.log('here');
+  return <div>
+            <textarea placeholder="Add a more detailed description..."></textarea>
+            <button>Save</button>
+            <a>X</a>
+         </div>
+  }
+
 
 class BoardComponent extends React.Component {
 
