@@ -90,7 +90,7 @@ a:hover
 
 .white:hover
 {
-	background-color:green;
+	background-color:gray;
 }
 
 ul {
@@ -150,6 +150,11 @@ ul {
 .block
 {
 	display:block;
+}
+
+.finished {
+	color:#ffffff;
+	background-color:#4caf50;
 }
 
 .modal-overlay {
