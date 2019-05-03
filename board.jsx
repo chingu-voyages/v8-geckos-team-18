@@ -7,73 +7,29 @@ let temps = function () {
             id: "L0",
             title: "Stuff to try (this is a list)",
             cards: [{
-                id: "C0", title: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", finished: false
-            }, { id: "C1", title: "Familiarize yourself with git + github", finished: false }]
+                id: "C0", title: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            }, { id: "C1", title: "Familiarize yourself with git + github" }]
         }, {
             id: "L1",
             title: "Another Listttttttttttttttttttttttttttttttttttttttttttttttttttt",
-            cards: [{ id: "C3", title: "X", finished: false },
-            { id: "C4", title: "Y", finished: false },
-            { id: "C5", title: "Z", finished: false }]
+            cards: [{ id: "C3", title: "X" }, { id: "C4", title: "Y" }, { id: "C5", title: "Z" }]
         }, {
             id: "L2",
             title: "Bonus Considerations",
-            cards: [{ id: "C6", title: "Test Units", finished: false },
-            { id: "C7", title: "Make it mobile responsive", finished: false },
+            cards: [{ id: "C6", title: "Test Units" },
+            { id: "C7", title: "Make it mobile responsive" },
             {
                 id: "C8",
-                title: "Create a bookself for the users that stores bookmarked books", finished: false
+                title: "Create a bookself for the users that stores bookmarked books"
             },
             {
                 id: "C9",
-                title: "On search input, display the last 10 search queries.", finished: false
+                title: "On search input, display the last 10 search queries."
             }]
         }], ids: {
             listsId: 3,
             cardsId: 10
         }
-    }
-
-    function copyCard(listIndex, cardIndex) {
-        let tempcard = {
-            id: "C" + tempdata.ids.cardsId,
-            title: tempdata.lists[listIndex].cards[cardIndex].title + "(1)"
-            , finished: tempdata.lists[listIndex].cards[cardIndex].finished
-        };
-
-        tempdata.lists[listIndex].cards.splice(cardIndex + 1, 0, tempcard);
-        tempdata.ids.cardsId++;
-
-    }
-
-    function addList(listTitle) {
-        let list = {
-            id: "L" + tempdata.ids.listsId,
-            title: listTitle,
-            cards: []
-        };
-        tempdata.lists.push(list);
-        tempdata.ids.listsId++;
-    }
-
-    function deleteList(listId) {
-        tempdata.lists.splice(listId, 1);
-    }
-
-    function copyList(listId) {
-        let list = {
-            id: "L" + tempdata.ids.listsId,
-            title: tempdata.lists[listId].title,
-            cards: tempdata.lists[listId].cards.map((card) => {
-                return {
-                    id: "C" + tempdata.ids.cardsId++,
-                    title: card.title,
-                    finished: card.finished
-                };
-            })
-        }
-        tempdata.lists.splice(listId + 1, 0, list);
-        tempdata.ids.listsId++;
     }
 
     function get() {
@@ -101,78 +57,11 @@ let temps = function () {
 
     function addListId() {
         tempdata.ids.listsId++;
-    }
 
-    function getList() {
-        let newarr = tempdata.lists.map((item) => {
-            return {
-                id: item.id,
-                title: item.title,
-                cards: item.cards.concat()
-            }
-        });
-        return newarr;
     }
 
     function changeTitle(title) {
         tempdata.boardtitle = title;
-    }
-
-    function addCard(listId, cardTitle) {
-        tempdata.lists[listId].cards.push(
-            {
-                id: "C" + tempdata.ids.cardsId,
-                title: cardTitle, finished: false
-            }
-        );
-        tempdata.ids.cardsId++;
-    }
-
-    function deleteCard(listIndex, cardIndex) {
-        tempdata.lists[listIndex].cards.splice(cardIndex, 1);
-    }
-
-    function finishCard(listIndex, cardIndex) {
-        tempdata.lists[listIndex].cards[cardIndex].finished = !tempdata.lists[listIndex].cards[cardIndex].finished;
-    }
-
-    function changeCardTitle(listIndex, cardIndex, cardTitle) {
-        tempdata.lists[listIndex].cards[cardIndex].title = cardTitle;
-    }
-
-    function changeListTitle(id, listTitle) {
-        getById(id).title = listTitle;
-    }
-
-    function swapList(sourceIndex, destinationIndex) {
-        let target = { ...tempdata.lists[sourceIndex] };
-        tempdata.lists.splice(sourceIndex, 1);
-        tempdata.lists.splice(destinationIndex, 0, target);
-
-    }
-
-    function swapCardWithinList(sourceDroppableId, sourceIndex, destinationIndex) {
-        let target = {
-            ...getById(sourceDroppableId).
-                cards[sourceIndex]
-        };
-        getById(sourceDroppableId).cards.splice(sourceIndex, 1);
-        getById(sourceDroppableId).cards.splice(destinationIndex, 0, target);
-
-    }
-
-    function swapCard(sourceDroppableId, destinationDroppableId, sourceIndex, destinationIndex) {
-        let target = {
-            ...getById(sourceDroppableId).
-                cards[sourceIndex]
-        };
-        getById(sourceDroppableId).cards.splice(sourceIndex, 1);
-        if (sourceDroppableId === destinationDroppableId) {
-            getById(sourceDroppableId).cards.splice(destinationIndex, 0, target);
-        }
-        else {
-            getById(destinationDroppableId).cards.splice(destinationIndex, 0, target);
-        }
     }
 
     return {
@@ -182,195 +71,19 @@ let temps = function () {
         getById: getById,
         addCardId: addCardId,
         addListId: addListId,
-        test: test,
-        getList: getList,
-        addList: addList,
-        copyList: copyList,
-        deleteList: deleteList,
-        addCard: addCard,
-        copyCard: copyCard,
-        deleteCard: deleteCard,
-        finishCard: finishCard,
-        changeCardTitle: changeCardTitle,
-        changeListTitle: changeListTitle,
-        swapList: swapList,
-        swapCardWithinList: swapCardWithinList,
-        swapCard: swapCard
+        test: test
     }
 }();
-
-class BigListComponent extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {/*
-        console.log("Big man");
-        let arr = this.props.lists.map((list, index) => {
-
-            let props = {
-                list: { ...list },
-                index: index,
-                showListAction: this.showListActions[index],
-                showActionList: this.state.showActionList[index],
-                copyList: this.copyLists[index],
-                deleteList: this.deleteLists[index]
-                //CardsComponent: this.CardsComponent(list.cards, index, list.id),
-            };
-
-            return <ListComponent {...props} />
-        });
-
-        return <ReactBeautifulDnd.Droppable droppableId="all-col" direction="horizontal" type="column">
-            {(provided) => (
-                <div className="inlinetable" {...provided.droppableProps} ref={provided.innerRef}>
-                    <div className="inlinetable">
-                        {arr}
-                        {...provided.placeholder}
-                    </div>
-                </div>
-            )}
-
-        </ReactBeautifulDnd.Droppable>
-
-            */}
-}
-
-class NoCardsComponent extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let props = {
-            cardsInList: [...this.props.cards],
-            listIndex: this.props.listIndex,
-            showCardActions: this.props.showCardActions[this.props.listIndex],
-            showAdd: this.props.showAdd,
-            deleteCards: this.props.deleteCards[this.props.listIndex],
-            copyCards: this.props.copyCards[this.props.listIndex],
-            showCardActionList: [...this.props.showCardActionList]
-        };
-
-        return <div>
-            <CardListComponent {...props} />{/*<ReactBeautifulDnd.Droppable key={this.props.listId} 
-        droppableId={this.props.listId} type="task">
-            {(provided) => (<div className="Container" {...provided.droppableProps}
-                ref={provided.innerRef}>
-                <div>
-                    <ul><CardListComponent {...props} /></ul>
-                </div>
-                {provided.placeholder}
-            </div>)}
-        </ReactBeautifulDnd.Droppable>*/}
-            <button className={"btn btn-sm btn-link " + (this.props.showAddCardList[this.props.listIndex] ? "hiddentextarea" : "")}
-                type="button" onClick={this.props.showAddCards[this.props.listIndex]}>Add another card</button>
-            <div className={(this.props.showAddCardList[this.props.listIndex] ? "" : "hiddentextarea ")}>
-                <textarea className="w-100" placeholder="Enter a title for this card..." onChange={this.props.handleCardTitleChange} value={this.props.cardTitle} />
-                <div className="inlinetable just">
-                    <button className="btn btn-sm btn-success" onClick={this.props.addCards[this.props.listIndex]}>Add card</button><button className="btn btn-sm btn-dark" onClick={this.props.showAddCards[this.props.listIndex]}>x</button><button className="btn btn-sm btn-dark">...</button>
-                </div>
-            </div>
-        </div>;
-
-    }
-}
-
-class ListComponent extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    shouldComponentUpdate(nextProps) {
-
-        if (this.props.index !== nextProps.index) {
-            return true;
-        }
-        let oldCardLength = this.props.list.cards.length;
-        let newCardLength = nextProps.list.cards.length;
-        if (oldCardLength !== newCardLength) {
-            return true;
-        }
-
-        for (let i = 0; i < oldCardLength; i++) {
-
-            if (this.props.list.cards[i].title
-                .localeCompare(nextProps.list.cards[i].title) !== 0) {
-                return true;
-            }
-
-            if (this.props.list.cards[i].id
-                .localeCompare(nextProps.list.cards[i].id) !== 0) {
-                return true;
-            }
-
-            if (this.props.list.cards[i].finished !== nextProps.list.cards[i].finished) {
-                return true;
-            }
-        }
-
-        if (this.props.showCardActionList[this.props.index] !== undefined) {
-
-            if (nextProps.showCardActionList[this.props.index] === undefined) {
-                return true;
-            }
-
-            for (let i = 0; i < this.props.showCardActionList[this.props.index].length; i++) {
-                if (this.props.showCardActionList[this.props.index][i]
-                    !== nextProps.showCardActionList[this.props.index][i]) {
-                    return true;
-                }
-            }
-        }
-        else {
-            if (nextProps.showCardActionList[this.props.index] !== undefined) {
-                return true;
-            }
-        }
-
-        if (this.props.showActionList !== nextProps.showActionList) {
-            return true;
-        }
-
-        return false;
-    }
-    //cardsInList,listIndex,listId,this.showCardActions,this.showAdd
-    //this.deleteCards,this.copyCards,this.state.showCardActionList
-    //this.state.showAddCardList,this.showAddCards,this.handleCardChange
-    //this.state.cardTitle,this.addCards
-
-    render() {
-        return <div key={this.props.list.id}>
-            <div className={"inlinetable just" +
-                (this.props.showActionList ? "" : "")}>
-
-                <button className="btn-warning" onClick={this.props.deleteList}>Delete List</button>
-                <br />
-                <button className="btn-warning" onClick={this.props.copyList}>Copy List</button>
-            </div>
-
-            {this.props.CardsComponent(this.props.list.cards,
-                this.props.index, this.props.list.id, this.props.showCardActionList
-                , this.props.showAddCardList, this.props.newListTitle)}
-
-        </div>
-        {/*<ListTitleComponent id={list.id} />*/ }
-    }
-}
 
 class ListsComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            lists: temps.getList(),
+            lists: temps.get().lists,
             showActionList: [],
             showTitleEditor: false,
-            showAddList: false,
-            newListTitle: "",
-            showCardActionList: [],
-            showAddCardList: [],
-            cardTitle: ""
-
+            showAddList:false,
+            newListTitle:""
         };
 
         this.toggleAddList = this.toggleAddList.bind(this);
@@ -380,215 +93,26 @@ class ListsComponent extends React.Component {
         this.deleteLists = [];
         this.showListActions = [];
         let listLength = this.state.lists.length;
-
-        //Card method
-        this.handleCardTitleChange = this.handleCardTitleChange.bind(this);
-        this.showAddCards = [];
-        this.addCards = [];
-        this.copyCards = [];
-        this.deleteCards = [];
-        this.showCardActions = [];
-        this.CardsComponent = this.CardsComponent.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
 
         for (let i = 0; i < listLength; i++) {
-            this.showAddCards.push(this.showAddCard.bind(this, i));
-            this.addCards.push(this.addCard.bind(this, i));
             this.copyLists.push(this.copyList.bind(this, i));
             this.deleteLists.push(this.deleteList.bind(this, i));
             this.showListActions.push(this.showListAction.bind(this, i));
-
-            //card method
-            let cardLength = this.state.lists[i].cards.length;
-            let newarr1 = [];
-            let newarr2 = [];
-            let newarr3 = [];
-            for (let j = 0; j < cardLength; j++) {
-                newarr1.push(this.copyCard.bind(this, i, j));
-                newarr2.push(this.deleteCard.bind(this, i, j));
-                newarr3.push(this.showCardAction.bind(this, i, j));
-            }
-            this.copyCards.push(newarr1);
-            this.deleteCards.push(newarr2);
-            this.showCardActions.push(newarr3);
         }
     }
 
-    showCardAction(listIndex = 0, cardIndex = 0) {
-        let newarr = [...this.state.showCardActionList];
-        if (newarr[listIndex] === undefined) {
-            newarr[listIndex] = [];
-        }
-        if (newarr[listIndex][cardIndex]) {
-            newarr[listIndex] = [];
-            newarr[listIndex][cardIndex] = false;
-        }
-        else {
-            newarr = [];
-            newarr[listIndex] = [];
-            newarr[listIndex][cardIndex] = !newarr[listIndex][cardIndex];
-        }
-
-
+    toggleAddList()
+    {
         this.setState({
-            showCardActionList: newarr
-        });
-
-    }
-
-    showAdd(item = [], listIndex = 0, cardIndex = 0) {
-        if (item[listIndex] === undefined) {
-            return false;
-        }
-        return item[listIndex][cardIndex];
-    }
-
-    deleteCard(listIndex, cardIndex) {
-        temps.deleteCard(listIndex, cardIndex);
-        this.setState({
-            lists: temps.getList(),
-            showCardActionList: []
+            showAddList:!this.state.showAddList
         });
     }
 
-    copyCard(listIndex, cardIndex) {
-        /*let tempcard = {
-            id: "C" + temps.get().ids.cardsId,
-            title: temps.get().lists[listIndex].cards[cardIndex].title + "(1)"
-            , finished: temps.get().lists[listIndex].cards[cardIndex].finished
-        };
-
-        temps.get().lists[listIndex].cards.push(tempcard);
-
-        temps.addCardId();*/
-        temps.copyCard(listIndex, cardIndex);
+    handleListTitleChange()
+    {
         this.setState({
-            lists: temps.getList(),
-            showCardActionList: []
-        });
-
-        let cardLength = temps.get().lists[listIndex].cards.length;
-        if (this.copyCards[listIndex].length < cardLength) {
-
-            this.copyCards[listIndex].push(this.copyCard.bind(this, listIndex, cardLength - 1));
-            this.deleteCards[listIndex].push(this.deleteCard.bind(this, listIndex, cardLength - 1));
-            this.showCardActions[listIndex].push(this.showCardAction.bind(this, listIndex, cardLength - 1));
-        }
-    }
-
-    addCard(index) {
-
-        temps.addCard(index, this.state.cardTitle);
-        /*temps.get().lists[index].cards.push(
-            {
-                id: "C" + temps.get().ids.cardsId,
-                title: this.state.cardTitle, finished: false
-            }
-        );
-
-        temps.addCardId();*/
-
-        this.setState({
-            lists: temps.getList(),
-            cardTitle: ""
-        });
-
-        let cardLength = temps.get().lists[index].cards.length;
-        if (this.copyCards[index].length < cardLength) {
-            this.copyCards[index].push(this.copyCard.bind(this, index, cardLength - 1));
-            this.deleteCards[index].push(this.deleteCard.bind(this, index, cardLength - 1));
-            this.showCardActions[index].push(this.showCardAction.bind(this, index, cardLength - 1));
-        }
-    }
-
-    //cardsInList,listIndex,listId,this.showCardActions,this.showAdd
-    //this.deleteCards,this.copyCards,this.state.showCardActionList
-    //this.state.showAddCardList,this.showAddCards,this.handleCardChange
-    //this.state.cardTitle,this.addCards
-    CardsComponent(cardsInList = [], listIndex = -1,
-        listId = "", showCardActionList, showAddCardList, newListTitle) {
-        let props = {
-            listId: listId,
-            cardsInList: [...cardsInList],
-            listIndex: listIndex,
-            showCardActions: this.showCardActions[listIndex],
-            showAdd: this.showAdd,
-            deleteCards: this.deleteCards[listIndex],
-            copyCards: this.copyCards[listIndex],
-            showCardActionList: [...showCardActionList]
-        };
-
-        /*let arr = cardsInList.map((card, index) => {
-            return <ReactBeautifulDnd.Draggable key={card.id} draggableId={card.id} index={index}>
-                {(provided) => (<div {...provided.draggableProps}
-                    {...provided.dragHandleProps} ref={provided.innerRef}>
-                    <li><div className="white cardtitle"><CardComponent cardTitle={card.title + " (" + card.id + ")"} /><div>
-                        <button className="btn btn-sm actionbutton" onClick={this.showCardActions[listIndex][index]}>...</button>
-                        <div className="inner"><div className={"inline actionlist " + ((this.showAdd(this.state.showCardActionList, listIndex, index)) ? "" : "hiddentextarea")}>
-                            <button className="btn actionbutton" onClick={this.deleteCards[listIndex][index]}>Ddelete</button>
-                            <br />
-                            <button className="btn actionbutton" onClick={this.copyCards[listIndex][index]}>Copy</button>
-                        </div>
-                        </div>
-                    </div></div></li>
-                </div>)}
-
-            </ReactBeautifulDnd.Draggable>;
-        });*/
-
-        return <div>
-            <CardListComponent {...props} />
-            {/*<button className={"btn btn-sm btn-link " + (this.state.showAddCardList[listIndex] ? "hiddentextarea" : "")}
-                type="button" onClick={this.showAddCards[listIndex]}>Add another card</button>
-            <div className={(this.state.showAddCardList[listIndex] ? "" : "hiddentextarea ")}>
-                <textarea className="w-100" placeholder="Enter a title for this card..." onChange={this.handleCardTitleChange} value={newListTitle} />
-                <div className="inlinetable just">
-                    <button className="btn btn-sm btn-success" onClick={this.addCards[listIndex]}>Add card</button><button className="btn btn-sm btn-dark" onClick={this.showAddCards[listIndex]}>x</button><button className="btn btn-sm btn-dark">...</button>
-                </div>
-            </div>*/}
-        </div>;
-    }
-
-    showAddCard(index) {
-        let newarr = [...this.state.showAddCardList];
-        if (newarr[index]) {
-            newarr[index] = !newarr[index];
-
-        }
-        else {
-            newarr = [];
-            newarr[index] = !newarr[index];
-        }
-        this.setState({
-            showAddCardList: newarr
-        });
-    }
-
-    shouldComponentUpdate(nextState) {
-        return true;
-    }
-
-    toggleAddList() {
-        this.setState({
-            showAddList: !this.state.showAddList
-        });
-    }
-
-    toggleAddCardList() {
-        this.setState({
-            showAddCardList: !this.state.showAddCardList
-        });
-    }
-
-    handleCardTitleChange() {
-        this.setState({
-            cardTitle: event.target.value
-        });
-    }
-
-    handleListTitleChange() {
-        this.setState({
-            newListTitle: event.target.value
+            newListTitle:event.target.value
         });
     }
 
@@ -598,53 +122,38 @@ class ListsComponent extends React.Component {
         }
 
         if (result.type === "column") {
-            temps.swapList(result.source.index, result.destination.index);
+
+            let target = { ...temps.get().lists[result.source.index] };
+            temps.get().lists.splice(result.source.index, 1);
+            temps.get().lists.splice(result.destination.index, 0, target);
             this.setState({
-                lists: temps.getList()
+                lists: temps.get().lists
             });
             return;
         }
         else if (result.type === "task") {
-            temps.swapCard(result.source.droppableId, result.destination.droppableId,
-                result.source.index, result.destination.index);
-                this.setState({
-                    lists: temps.getList()
-                });
-
             if (result.source.droppableId === result.destination.droppableId) {
-                /*temps.swapCard(result.source.droppableId, result.destination.droppableId,
-                    result.source.index, result.destination.index);*/
-                /*let target = {
+                let target = {
                     ...temps.getById(result.source.droppableId).
                         cards[result.source.index]
                 };
                 temps.getById(result.source.droppableId).cards.splice(result.source.index, 1);
                 temps.getById(result.source.droppableId).cards.splice(result.destination.index, 0, target);
-                */
-                /*this.setState({
-                    lists: temps.getList()
-                });*/
+                this.setState({
+                    lists: temps.get().lists
+                });
                 return;
             }
             else {
-                /*temps.swapCard(result.source.droppableId,
-                    result.destination.droppableId,
-                    result.source.index,
-                    result.destination.index);
+                let target = {
+                    ...temps.getById(result.source.droppableId).
+                        cards[result.source.index]
+                };
+                temps.getById(result.source.droppableId).cards.splice(result.source.index, 1);
+                temps.getById(result.destination.droppableId).cards.splice(result.destination.index, 0, target);
                 this.setState({
-                    lists: temps.getList()
-                });*/
-                let index = temps.get().lists.indexOf(temps.getById(result.destination.droppableId));
-                let cardLength = temps.getById(result.destination.droppableId).cards.length;
-                if (this.copyCards[index].length < cardLength) {
-                    this.copyCards[index].push(this.copyCard.bind(this, index,
-                        cardLength - 1));
-                    this.deleteCards[index].push(this.deleteCard.bind(this, index,
-                        cardLength - 1));
-                    this.showCardActions[index].push(this.showCardAction.bind(this, index,
-                        cardLength - 1));
-
-                }
+                    lists: temps.get().lists
+                });
                 return;
             }
         }
@@ -660,145 +169,63 @@ class ListsComponent extends React.Component {
             newarr = [];
             newarr[index] = !newarr[index];
         }
-
         this.setState({
             showActionList: newarr
         });
     }
 
     addList() {
-        temps.addList(this.state.newListTitle);
-        /*temps.get().lists.push({
+        temps.get().lists.push({
             id: "L" + temps.get().ids.listsId,
             title: this.state.newListTitle,
             cards: []
         });
-        temps.addListId();*/
+        temps.addListId();
         this.setState({
-            lists: temps.getList(),
-            newListTitle: ""
+            lists: temps.get().lists,
+            newListTitle:""
         });
 
-        let listLength = temps.get().lists.length;
 
-        if (this.copyLists.length < listLength) {
-            this.copyLists.push(this.copyList.bind(this, listLength - 1));
-            this.deleteLists.push(this.deleteList.bind(this, listLength - 1));
-            this.showListActions.push(this.showListAction.bind(this, listLength - 1));
-            this.showCardActions.push([]);
-            this.deleteCards.push([]);
-            this.copyCards.push([]);
-            this.showAddCards.push(this.showAddCard.bind(this, listLength - 1));
-            this.addCards.push(this.addCard.bind(this, listLength - 1));
-        }
+        let listLength = this.state.lists.length;
+        this.copyLists.push(this.copyList.bind(this, listLength - 1));
+        this.deleteLists.push(this.deleteList.bind(this, listLength - 1));
+        this.showListActions.push(this.showListAction.bind(this, listLength - 1));
     }
 
     copyList(index) {
-        temps.copyList(index);
-        /*temps.get().lists.push({
+        temps.get().lists.push({
             id: "L" + temps.get().ids.listsId,
             title: temps.get().lists[index].title,
             cards: [...temps.get().lists[index].cards.map((card) => {
                 return {
                     id: "C" + temps.get().ids.cardsId++,
-                    title: card.title, 
-                    finished: card.finished
+                    title: card.title
                 };
             })]
         });
         temps.addListId();
-        */
-        let templistlength = temps.get().lists.length;
-
-        if (this.copyCards.length < templistlength) {
-
-            let cardLength = temps.get().lists[templistlength - 1].cards.length;
-            let newarr1 = [];
-            let newarr2 = [];
-            let newarr3 = [];
-            for (let j = 0; j < cardLength; j++) {
-                newarr1.push(this.copyCard.bind(this, templistlength - 1, j));
-                newarr2.push(this.deleteCard.bind(this, templistlength - 1, j));
-                newarr3.push(this.showCardAction.bind(this, templistlength - 1, j));
-            }
-
-            if (this.copyCards[templistlength] !== undefined) {
-                this.copyCards[templistlength] = [...newarr1];
-                this.deleteCards[templistlength] = [...newarr2];
-                this.showCardActions[templistlength] = [...newarr3];
-            }
-
-            this.copyCards.push(newarr1);
-            this.deleteCards.push(newarr2);
-            this.showCardActions.push(newarr3);
-        }
-
         this.setState({
-            lists: temps.getList(),
+            lists: temps.get().lists,
             showActionList: []
         });
 
-        let listLength = temps.get().lists.length;
-        if (this.copyLists.length < listLength) {
-            this.copyLists.push(this.copyList.bind(this, listLength - 1));
-            this.deleteLists.push(this.deleteList.bind(this, listLength - 1));
-            this.showListActions.push(this.showListAction.bind(this, listLength - 1));
-            this.showAddCards.push(this.showAddCard.bind(this, listLength - 1));
-            this.addCards.push(this.addCard.bind(this, listLength - 1));
-        }
+        let listLength = this.state.lists.length;
+        this.copyLists.push(this.copyList.bind(this, listLength - 1));
+        this.deleteLists.push(this.deleteList.bind(this, listLength - 1));
+        this.showListActions.push(this.showListAction.bind(this, listLength - 1));
     }
 
     deleteList(index) {
-        temps.deleteList(index);
+        temps.get().lists.splice(index, 1);
         this.setState({
-            lists: temps.getList(),
+            lists: temps.get().lists,
             showActionList: []
         });
     }
 
-    //list, index, this.showListActions[index]
-    //,this.showActionList[index],this.copyList[index]
-    //this.deleteList[index]
-
     render() {
-        //this.state.lists,this.showListAction,this.state.showActionList
-        //this.copyList,this.deleteLists,this.CardsComponent
-
-        //cardsInList,listIndex,listId,this.showCardActions,this.showAdd
-        //this.deleteCards,this.copyCards,this.state.showCardActionList
-        //this.state.showAddCardList,this.showAddCards,this.handleCardChange
-        //this.state.cardTitle,this.addCards
-
         let arr = this.state.lists.map((list, index) => {
-
-            let props = {
-                list: { ...list },
-                index: index,
-                showListAction: this.showListActions[index],
-                showActionList: this.state.showActionList[index],
-                copyList: this.copyLists[index],
-                deleteList: this.deleteLists[index],
-                CardsComponent: this.CardsComponent,
-                showCardActionList: this.state.showCardActionList,
-                showAddCardList: this.state.showAddCardList,
-                newListTitle: ""
-            };
-
-            return <ReactBeautifulDnd.Draggable key={list.id + "dropper"} draggableId={list.id} index={index}>
-                {(provided) => (
-                    <div className="inlinetable divclass" {...provided.draggableProps} ref={provided.innerRef}>
-                        <div {...provided.dragHandleProps} className="listtitle">
-                            <ListTitleComponent id={list.id} /></div>
-                        <div>
-                            <ListComponent {...props} />
-                            <button className={"btn btn-sm btn-link " + (this.state.showAddCardList[index] ? "hiddentextarea" : "")} onClick={this.showAddCards[index]}>Add another card</button>
-                            <div className={(this.state.showAddCardList[index] ? "" : "hiddentextarea ")}>
-                                <textarea className="w-100" placeholder="Enter a title for this card..." onChange={this.handleCardTitleChange} value={this.state.cardTitle} />
-                                <div className="inlinetable just">
-                                    <button className="btn btn-sm btn-success" onClick={this.addCards[index]}>Add card</button><button className="btn btn-sm btn-dark" onClick={this.showAddCards[index]}>x</button><button className="btn btn-sm btn-dark">...</button>
-                                </div>
-                            </div>
-                        </div></div>)}</ReactBeautifulDnd.Draggable>
             return <ReactBeautifulDnd.Draggable key={list.id + "dropper"} draggableId={list.id} index={index}>
                 {(provided) => (
                     <div className="inlinetable" {...provided.draggableProps} ref={provided.innerRef}>
@@ -815,36 +242,45 @@ class ListsComponent extends React.Component {
                                 </div></div>
 
                         </div>
-                            {this.CardsComponent(this.state.lists[index].cards, index, this.state.lists[index].id)}
+                            <CardsComponent id={list.id} />
 
                         </div>
                         {/*<ListTitleComponent id={list.id} />*/}</div>)}</ReactBeautifulDnd.Draggable>
         });
 
-        return <ReactBeautifulDnd.DragDropContext onDragEnd={this.onDragEnd}>
-            {<ReactBeautifulDnd.Droppable droppableId="all-col" direction="horizontal" type="column">
-                {(provided) => (
-                    <div className="inlinetable" {...provided.droppableProps} ref={provided.innerRef}>
-                        <div className="inlinetable">
-                            {arr}
-                            {...provided.placeholder}
-
-                        </div>
+        return <ReactBeautifulDnd.DragDropContext onDragEnd={this.onDragEnd}><ReactBeautifulDnd.Droppable droppableId="all-col" direction="horizontal" type="column">
+            {(provided) => (
+                <div className="inlinetable" {...provided.droppableProps} ref={provided.innerRef}>
+                    <div className="inlinetable">
+                        {arr}
+                        {provided.placeholder}
                         <div className="divclass">
                             <button className={"btn btn-sm btn-light " + (this.state.showAddList ? "hiddentextarea" : "")}
                                 onClick={this.toggleAddList}>Add another List</button>
                             <div className={(this.state.showAddList ? "" : "hiddentextarea ")}>
                                 <textarea className="w-100" placeholder="Enter list title..." onChange={this.handleListTitleChange} value={this.state.newListTitle} />
                                 <div>
-                                    <button className="btn btn-sm btn-success" onClick={this.addList}>Add List</button><button className="btn btn-sm btn-dark" onClick={this.toggleAddList}>x</button>
+                                    <button className="btn btn-sm btn-success" onClick={this.addList}>Add card</button><button className="btn btn-sm btn-dark" onClick={this.toggleAddList}>x</button>
                                 </div>
-                                <div></div>
                             </div>
+                            {/* <form id="on0" className={"small " + ("" ? "" : "hiddentextarea")}
+                                onSubmit={"this.addList"}>
+                                <p>
+                                    <input id="addlistid" onChange={"this.handleChange"}
+                                        value={"this.state.input"} type="text" />
+                                </p>
+                                <p>
+                                    <input type="submit" value="Add list" />
+                                    <button onClick={"this.displayForm"}>X</button>
+                                </p>
+                            </form> */}
                         </div>
                     </div>
-                )}
 
-            </ReactBeautifulDnd.Droppable>}
+                </div>
+            )}
+
+        </ReactBeautifulDnd.Droppable>
         </ReactBeautifulDnd.DragDropContext>;
     }
 }
@@ -865,12 +301,6 @@ class ListTitleComponent extends React.Component {
         this.handleTitleSubmit = this.handleTitleSubmit.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.tempListTitle !== nextState.tempListTitle
-            || this.state.input !== nextState.input
-            || this.state.showListTitleEditor !== nextState.showListTitleEditor;
-    }
-
     getById(array, id) {
         return array.find((item) => { return item.id === id; });
     }
@@ -882,7 +312,6 @@ class ListTitleComponent extends React.Component {
             }
         );
     }
-
 
     showTitleEditor() {
         this.setState({
@@ -905,7 +334,7 @@ class ListTitleComponent extends React.Component {
 
     render() {
         return <div>
-            <p className={"textis " + (this.state.showListTitleEditor ? "hiddentextarea" : "")}
+            <p className={this.state.showListTitleEditor ? "hiddentextarea" : ""}
                 onClick={this.showTitleEditor}>
                 <b>{this.state.tempListTitle + " (" +
                     temps.getById(this.props.id).id + ")"}</b>
@@ -987,196 +416,17 @@ class BoardTitleComponent extends React.Component {
     }
 }
 
-class CardComponent extends React.Component {
+class CardsComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cardTitle: this.props.cardTitle,
-            showTitleEditor: false,
-            input: "",
-            isFinished: this.props.card.finished,
-            finishText: (this.props.card.finished ? "Unfinish" : "Finish")
-        }
-        this.showCardTitleEditor = this.showCardTitleEditor.bind(this);
-        this.handleCardTitleChange = this.handleCardTitleChange.bind(this);
-        this.changeCardTitle = this.changeCardTitle.bind(this);
-        this.handleFinished = this.handleFinished.bind(this);
-    }
-
-    handleFinished() {
-        temps.finishCard(this.props.listIndex, this.props.cardIndex);
-        this.setState({
-            isFinished: temps.get().lists[this.props.listIndex].cards[this.props.cardIndex].finished,
-            finishText: (temps.get().lists[this.props.listIndex].cards[this.props.cardIndex].finished ? "Unfinish" : "Finish")
-        });
-    }
-
-    changeCardTitle() {
-        temps.changeCardTitle(this.props.listIndex, this.props.cardIndex, this.state.input);
-
-        this.setState({
-            cardTitle: temps.get().lists[this.props.listIndex].
-                cards[this.props.cardIndex].title +
-                " (" +
-                temps.get().lists[this.props.listIndex].cards[this.props.cardIndex].id + ")",
-            showTitleEditor: false
-        });
-    }
-
-    handleCardTitleChange() {
-        this.setState({
-            input: event.target.value
-        });
-    }
-
-    showCardTitleEditor() {
-        this.setState({
-            showTitleEditor: !this.state.showTitleEditor
-        });
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return true;
-    }
-
-    render() {
-        return <div className={this.state.isFinished ? "finished" : ""}>
-            <div className={(this.state.showTitleEditor ? "hiddentextarea" : "")}>
-                <p className={"fixwidth"} onClick={this.showCardTitleEditor}>
-                    {this.state.cardTitle}</p>
-                <button className="btn-info" onClick={this.handleFinished}>{this.state.finishText}</button>
-
-            </div>
-            <div className={(this.state.showTitleEditor ? "" : "hiddentextarea")}>
-                <textarea className="w-100" placeholder="Enter card title..." onChange={this.handleCardTitleChange} value={this.state.input} />
-                <div>
-                    <button className="btn btn-sm btn-dark" onClick={this.changeCardTitle}>Change</button><button className="btn btn-sm btn-dark" onClick={this.showCardTitleEditor}>x</button>
-                </div>
-            </div>
-        </div>
-    }
-}
-
-class CardListComponent extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    shouldComponentUpdate(nextProps) {
-
-        if (this.props.listIndex !== nextProps.listIndex) {
-            return true;
-        }
-
-        let cardLength = this.props.cardsInList.length;
-        if (cardLength !== nextProps.cardsInList.length) {
-            return true;
-        }
-
-        for (let i = 0; i < cardLength; i++) {
-
-            if (this.props.cardsInList[i].id.localeCompare(nextProps.cardsInList[i].id) !== 0) {
-                return true;
-            }
-
-            if (this.props.cardsInList[i].title.localeCompare(nextProps.cardsInList[i].title) !== 0) {
-                return true;
-            }
-
-            if (this.props.cardsInList[i].finished !== nextProps.cardsInList.finished) {
-                return true;
-            }
-
-        }
-
-        if (this.props.showCardActionList[this.props.listIndex] !== undefined) {
-
-            if (nextProps.showCardActionList[this.props.listIndex] === undefined) {
-                return true;
-            }
-
-            for (let i = 0; i < this.props.showCardActionList[this.props.listIndex].length; i++) {
-                if (this.props.showCardActionList[this.props.listIndex][i]
-                    !== nextProps.showCardActionList[this.props.listIndex][i]) {
-                    return true;
-                }
-            }
-        }
-        else {
-            if (nextProps.showCardActionList[this.props.listIndex] !== undefined) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    render() {
-        let arr = this.props.cardsInList.map((card, index) => {
-            return <ReactBeautifulDnd.Draggable key={card.id} draggableId={card.id} index={index}>
-                {(provided) => (<div {...provided.draggableProps}
-                    {...provided.dragHandleProps} ref={provided.innerRef}>
-                    <li><div className="white cardtitle">
-                        <CardComponent listIndex={this.props.listIndex}
-                            cardIndex={index} card={{ ...card }} cardTitle={card.title + " (" + card.id + ")"} />
-                        <div>
-                            <button className="btn btn-sm actionbutton" onClick={this.props.showCardActions[index]}>...</button>
-                            <div className="inner">
-                                <div className={"inline actionlist " +
-                                    ((this.props.showAdd(this.props.showCardActionList, this.props.listIndex, index))
-                                        ? "" : "hiddentextarea")}>
-                                    <button className="btn actionbutton" onClick={this.props.deleteCards[index]}>Delete</button>
-                                    <br />
-                                    <button className="btn actionbutton" onClick={this.props.copyCards[index]}>Copy</button>
-                                </div>
-                            </div>
-                        </div></div></li>
-                </div>)}
-
-            </ReactBeautifulDnd.Draggable>;
-        });
-
-        return <ReactBeautifulDnd.Droppable key={this.props.listId} droppableId={this.props.listId} type="task">
-            {(provided) => (<div className="Container" {...provided.droppableProps}
-                ref={provided.innerRef}>
-                <div>
-                    <ul>{arr}</ul>
-                </div>
-                {provided.placeholder}
-            </div>)}
-        </ReactBeautifulDnd.Droppable>
-
-        return <div>{arr}</div>
-    }
-}
-
-class CComponent extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            cards: [...this.props.cards]
-        }
-
-    }
-
-    render() {
-        let arr = this.state.cards.map((card) => {
-            return <div>{card.title}</div>
-        })
-        return <div>{arr}</div>
-    }
-}
-
-/*class CardsComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            cards: [...temps.getById(this.props.id).cards],
+            cards: temps.getById(this.props.id).cards,
             showActionList: [],
             showAddCardList: false,
-            cardTitle: ""
+            cardTitle: "",
+
+            showModal: false,
+            activeCard: undefined
         }
 
         this.toggleAddCardList = this.toggleAddCardList.bind(this);
@@ -1192,6 +442,8 @@ class CComponent extends React.Component {
             this.deleteCards.push(this.deleteCard.bind(this, i));
             this.showCardActions.push(this.showCardAction.bind(this, i));
         }
+
+        this.toggleModal = this.toggleModal.bind(this);
     }
 
     toggleAddCardList() {
@@ -1222,16 +474,15 @@ class CComponent extends React.Component {
 
     addCard() {
         event.preventDefault();
-        temps.getList(this.props.id).cards.push({
+        temps.getById(this.props.id).cards.push({
             id: "C" + temps.get().ids.cardsId,
             title: this.state.cardTitle
         });
 
         temps.addCardId();
 
-        temps.get().listscards
         this.setState({
-            cards: temps.getList(this.props.id).cards,
+            cards: temps.getById(this.props.id).cards,
             cardTitle: ""
         });
 
@@ -1270,6 +521,14 @@ class CComponent extends React.Component {
         this.showCardActions.push(this.showCardAction.bind(this, cardLength - 1));
     }
 
+// ********************** Toggle open card modal box *****************************//
+      toggleModal=(card)=>{
+        this.setState({
+          showModal: !this.state.showModal,
+          activeCard: card
+        })
+      }
+
     render() {
         let arr = this.state.cards.map((card, index) => {
             if (this.showCardActions[index] === undefined) {
@@ -1280,7 +539,14 @@ class CComponent extends React.Component {
             return <ReactBeautifulDnd.Draggable key={card.id} draggableId={card.id} index={index}>
                 {(provided) => (<div {...provided.draggableProps}
                     {...provided.dragHandleProps} ref={provided.innerRef}>
-                    <li><div className="white cardtitle"><p className="fixwidth">{card.title + " (" + card.id + ")"}</p><div>
+                    <li><div className="white cardtitle" onClick={this.toggleModal.bind(this, card)}>
+                          <p className="fixwidth">
+                            {card.title + " (" + card.id + ")"}
+                            {this.state.showModal ? (
+                                <ActiveCardComponent card={this.state.activeCard} toggleModal={this.toggleModal}/>
+                              ) : null}
+                          </p>
+                        <div>
                         <button className="btn btn-sm actionbutton" onClick={this.showCardActions[index]}>...</button>
                         <div className="inner"><div className={"inline actionlist " + (this.state.showActionList[index] ? "" : "hiddentextarea")}>
                             <button className="btn actionbutton" onClick={this.deleteCards[index]}>Delete</button>
@@ -1314,7 +580,71 @@ class CComponent extends React.Component {
         </div>;
     }
 }
-*/
+
+class ActiveCardComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showDescription: false
+    }
+  }
+
+  toggleDescription = () =>{
+    this.setState = {
+      showDescription: true
+    }
+  }
+
+  render = () =>{
+    return <div className="modal-overlay">
+              <div className="modal">
+                <div className="modal-container">
+                  <h3>{this.props.card.title}</h3>
+                  <button className="close-modal" onClick={this.props.toggleModal.bind(this, this.props.card)}>X</button>
+                  <div>
+                    <h5>Description</h5>
+                    <div className="opencard-description" onClick={this.toggleDescription}>
+                      {this.state.showDescription ?
+                        <DescriptionComponent /> : null}
+                      <a>Add a detailed description...</a>
+                    </div>
+                  </div>
+                  <aside className='side-area'>
+                    <div>
+                      <h5>Add To Card</h5>
+                      <a>Members</a>
+                      <a>Labels</a>
+                      <a>Checklist</a>
+                      <a>Due Date</a>
+                      <a>Attachment</a>
+                    </div>
+                    <div>
+                      <h5>Actions</h5>
+                      <a>Move</a>
+                      <a>Copy</a>
+                      <a>Watch</a>
+                    </div>
+                  </aside>
+                  <div className="opencard-comment">
+                    <h5>Comment</h5>
+                    <textarea placeholder="Write a comment..."></textarea>
+                    <button>Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+  }
+}
+
+const DescriptionComponent = () =>{
+  console.log('here');
+  return <div>
+            <textarea placeholder="Add a more detailed description..."></textarea>
+            <button>Save</button>
+            <a>X</a>
+         </div>
+  }
+
 
 class BoardComponent extends React.Component {
 
@@ -1864,11 +1194,12 @@ class BoardComponent extends React.Component {
 
     render() {
         return <div className="h-100">
-            <BoardTitleComponent title={temps.getTitle()} />
-            <div className="inlinetable">
-                <ListsComponent />
+                <BoardTitleComponent title={temps.getTitle()} />
+                <div className="inlinetable">
+                    <ListsComponent />
+                </div>
             </div>
-        </div>;
+        ;
     }
 }
 
