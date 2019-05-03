@@ -4,9 +4,23 @@
 	font-size:16px;
 }
 
+.textis
+{
+	font-size:0.8rem;
+}
+
 button
 {
 	font-size:14px;
+	border:none;
+	border:1px;
+	border-radius:2px;
+	background-color:white;
+}
+
+button:hover
+{
+	background-color:#eee;
 }
 
 nav
@@ -28,13 +42,14 @@ html,body
 	color:white;
 }
 
-.white
-{
 
+.white 
+{
+	
 	border-bottom:5px solid #eee;
 	padding:5px;
 	background-color:white;
-	font-size:15px;
+	font-size:14px;
 	white-space:normal;
 }
 
@@ -77,7 +92,7 @@ a:hover
 
 .actioncard
 {
-
+	
 }
 
 .cardtitle
@@ -90,7 +105,7 @@ a:hover
 
 .white:hover
 {
-	background-color:gray;
+   background-color:#f7f7f7;
 }
 
 ul {
@@ -140,7 +155,19 @@ ul {
   display:inline-table;
   background-color:#eee;
   	white-space:normal;
+	
+}
 
+.finished {
+	color:#ffffff;
+	background-color:#4caf50;
+}
+
+.divclassforaddbutton {
+	display:inline-table;
+  background-color:#eee;
+  	white-space:normal;
+	  margin:5px;
 }
 
 .hiddentextarea {
@@ -150,11 +177,6 @@ ul {
 .block
 {
 	display:block;
-}
-
-.finished {
-	color:#ffffff;
-	background-color:#4caf50;
 }
 
 .modal-overlay {
